@@ -15,6 +15,9 @@
 		063E802623048EA0001EFA2C /* Parsha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802123048EA0001EFA2C /* Parsha.swift */; };
 		063E802723048EA0001EFA2C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802223048EA0001EFA2C /* CalendarView.swift */; };
 		063E802B23048F7D001EFA2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802A23048F7D001EFA2C /* AppDelegate.swift */; };
+		06A32F2E23068C16000714F8 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F2D23068C16000714F8 /* PreferenceViewController.swift */; };
+		06A32F3023072A83000714F8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F2F23072A83000714F8 /* Preferences.swift */; };
+		06A32F322307331A000714F8 /* CalendarViewDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F312307331A000714F8 /* CalendarViewDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 		063E802123048EA0001EFA2C /* Parsha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsha.swift; sourceTree = "<group>"; };
 		063E802223048EA0001EFA2C /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		063E802A23048F7D001EFA2C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		06A32F2D23068C16000714F8 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
+		06A32F2F23072A83000714F8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		06A32F312307331A000714F8 /* CalendarViewDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +68,10 @@
 			isa = PBXGroup;
 			children = (
 				063E801323048E2C001EFA2C /* Main.storyboard */,
-				063E802223048EA0001EFA2C /* CalendarView.swift */,
 				063E802023048EA0001EFA2C /* JewishCalendarViewController.swift */,
+				063E802223048EA0001EFA2C /* CalendarView.swift */,
+				06A32F312307331A000714F8 /* CalendarViewDataModel.swift */,
+				06A32F2D23068C16000714F8 /* PreferenceViewController.swift */,
 				063E801E23048EA0001EFA2C /* DateConverter.swift */,
 				063E801F23048EA0001EFA2C /* Holidays.swift */,
 				063E802123048EA0001EFA2C /* Parsha.swift */,
@@ -71,6 +79,7 @@
 				063E801623048E2C001EFA2C /* Info.plist */,
 				063E801123048E2C001EFA2C /* Assets.xcassets */,
 				063E801723048E2C001EFA2C /* Jewish_Calendar.entitlements */,
+				06A32F2F23072A83000714F8 /* Preferences.swift */,
 			);
 			path = "Jewish Calendar";
 			sourceTree = "<group>";
@@ -107,7 +116,7 @@
 				TargetAttributes = {
 					063E800923048E2B001EFA2C = {
 						CreatedOnToolsVersion = 10.0;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -151,7 +160,10 @@
 				063E802523048EA0001EFA2C /* JewishCalendarViewController.swift in Sources */,
 				063E802423048EA0001EFA2C /* Holidays.swift in Sources */,
 				063E802623048EA0001EFA2C /* Parsha.swift in Sources */,
+				06A32F2E23068C16000714F8 /* PreferenceViewController.swift in Sources */,
+				06A32F3023072A83000714F8 /* Preferences.swift in Sources */,
 				063E802323048EA0001EFA2C /* DateConverter.swift in Sources */,
+				06A32F322307331A000714F8 /* CalendarViewDataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +301,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish_Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
@@ -302,7 +313,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -311,7 +322,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish_Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
@@ -323,7 +333,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
