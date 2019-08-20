@@ -93,7 +93,7 @@ class CalendarView: NSView {
     }
     
     func drawCenteredAt(_ text: String, _ point: NSPoint, _ font: NSFont = CalendarView.normalFont) {
-        let attributes = [NSAttributedString.Key.font: font]
+        let attributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: NSColor.labelColor]
         let stringWidth = text.size(withAttributes: attributes).width
         let startPoint = NSPoint(x: point.x - stringWidth / 2, y: point.y)
         text.draw(at: startPoint, withAttributes: attributes)
