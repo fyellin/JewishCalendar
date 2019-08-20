@@ -11,15 +11,26 @@ import Cocoa
 
 @IBDesignable
 class CalendarView: NSView {
-    
-    static let fontSize = CGFloat(10)
-    
     static let shortDayNames = DateFormatter().shortWeekdaySymbols!
-    static let normalFont = NSFont.systemFont(ofSize: fontSize)
-    static let boldFont = NSFont.boldSystemFont(ofSize: fontSize)
     
-    static let captionFont = NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
+    let boldFontSizeMultiplier = CGFloat(1.2)
+    let captionFontSizeMultiplier = CGFloat(1.4)
+
+    var fontSize : CGFloat!
+    var normalFont, boldFont, captionFont: NSFont!
     
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+    }
+    
+    required init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+    }
+    
+    private func initialize() {
+        addObserver(NSFontManager.shared, forKeyPath: "selectedFont", options: [.new], context: nil)
+    }
+        
     var dataModel : CalendarViewDataModel? = nil {
         didSet {
             needsDisplay = true
@@ -29,11 +40,16 @@ class CalendarView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        let captionTop = self.bounds.maxY
-        let captionBottom = captionTop - 20
+        fontSize = NSFontManager.shared.selectedFont?.pointSize ?? 13
+        normalFont = NSFont.systemFont(ofSize: fontSize)
+        boldFont = NSFont.boldSystemFont(ofSize: fontSize * boldFontSizeMultiplier)
+        captionFont = NSFont.boldSystemFont(ofSize: fontSize * captionFontSizeMultiplier)
         
+        let captionTop = self.bounds.maxY
+        let captionBottom = captionTop - captionFont.pointSize - 4
+
         let weekdayInfoTop = captionBottom
-        let weekdayInfoBottom = weekdayInfoTop - 30
+        let weekdayInfoBottom = weekdayInfoTop - boldFont.pointSize - 5
         
         let dateInfoTop = weekdayInfoBottom - 4
         let dateInfoBottom = CGFloat(2.0)
@@ -44,7 +60,6 @@ class CalendarView: NSView {
         let dateInfoWidth = (dateInfoRight - dateInfoLeft) / 7
         
         var rectArray = [NSRect]()
-        
         for row in 0...5 {
             for column in 0...6 {
                 let rect = NSRect(x: dateInfoLeft + CGFloat(column) * dateInfoWidth,
@@ -54,20 +69,13 @@ class CalendarView: NSView {
             }
         }
         
-        let absoluteStart = dataModel!.dayOfWeekFirst.rawValue
-        let dateInfoArray = dataModel!.dateInfoArray
-        
-        let width = self.bounds.width
-        
-        drawCenteredAt(getBanner(), NSPoint(x: bounds.midX, y: captionBottom), CalendarView.captionFont)
-        
-        for i in 0...6 {
-            let centerX = (CGFloat(i) + 0.5) * width / 7
-            let text = CalendarView.shortDayNames[i]
-            drawCenteredAt(text, NSPoint(x: centerX, y: weekdayInfoBottom), CalendarView.boldFont)
+        drawCenteredAt(getBanner(), NSPoint(x: bounds.midX, y: captionBottom), captionFont)
+        for (i, dayName) in CalendarView.shortDayNames.enumerated() {
+            drawCenteredAt(dayName, NSPoint(x: rectArray[i].midX, y: weekdayInfoBottom), boldFont)
         }
         
-        let dayOfWeekStart = (7 + absoluteStart) % 7
+        let dayOfWeekStart = dataModel!.dayOfWeekFirst.rawValue
+        let dateInfoArray = dataModel!.dateInfoArray
         for (i, dateInfo) in dateInfoArray.enumerated() {
             let rect = rectArray[i + dayOfWeekStart]
             drawOneDay(i + 1, rect, dateInfo)
@@ -77,29 +85,67 @@ class CalendarView: NSView {
     private func drawOneDay(_ dayOfMonth: Int, _ rect: NSRect, _ dateInfo: DateInfo) {
         NSBezierPath(rect: rect).stroke()
         let irect = rect.insetBy(dx: 1.0, dy: 2.0)
-        let lineSpacing = irect.height / CGFloat(5)
-        let top = irect.maxY
+        let lineSpacing = irect.height / (4 + boldFontSizeMultiplier)
+        let top = irect.maxY - (boldFontSizeMultiplier * lineSpacing)
         
         let secularDayString = String(dayOfMonth)
         let hebrewDayString = "\(dateInfo.hebrewDay) \(hebrewMonthNameOf(dateInfo))"
         let holidays = dateInfo.holidays
-        drawCenteredAt(secularDayString, NSPoint(x: irect.midX, y: top - lineSpacing), CalendarView.boldFont)
-        drawCenteredAt(hebrewDayString, NSPoint(x: irect.midX, y: top - 2 * lineSpacing))
+        drawCenteredAt(secularDayString, NSPoint(x: irect.midX, y: top), boldFont)
+        drawCenteredAt(hebrewDayString, NSPoint(x: irect.midX, y: top - lineSpacing))
         for (i, holiday) in holidays.enumerated() {
-            drawCenteredAt(holiday, NSPoint(x: irect.midX, y: top - CGFloat(i + 3) * lineSpacing))
+            if holiday.contains("/") && holidays.count < 3 {
+                if stringWidth(holiday) > irect.width {
+                    let slashIndex = holiday.firstIndex(of: "/")!
+                    let prefix = String(holiday[...slashIndex])
+                    let suffix = String(holiday[holiday.index(after: slashIndex)...])
+                    drawLeftAt(String(prefix),
+                               NSPoint(x: irect.minX, y: top - CGFloat(i + 2) * lineSpacing))
+                    drawRightAt(String(suffix),
+                                NSPoint(x: irect.maxX, y: top - CGFloat(i + 3) * lineSpacing))
+                    continue
+                }
+            }
+            drawCenteredAt(holiday, NSPoint(x: irect.midX, y: top - CGFloat(i + 2) * lineSpacing))
         }
     }
     
-    private func drawCenteredAt(_ text: String, _ point: NSPoint, _ font: NSFont = CalendarView.normalFont) {
-        let attributes = [NSAttributedString.Key.font: font,
-                          NSAttributedString.Key.foregroundColor: NSColor.labelColor]
+    private func drawCenteredAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+        let attributes : [NSAttributedString.Key : Any] = [
+            .font: font ?? normalFont!,
+            .foregroundColor: NSColor.labelColor]
         let stringWidth = text.size(withAttributes: attributes).width
         let startPoint = NSPoint(x: point.x - stringWidth / 2, y: point.y)
         text.draw(at: startPoint, withAttributes: attributes)
     }
     
+    private func drawLeftAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+        let attributes : [NSAttributedString.Key : Any] = [
+            .font: font ?? normalFont!,
+            .foregroundColor: NSColor.labelColor]
+        text.draw(at: point, withAttributes: attributes)
+    }
+    
+    private func drawRightAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+        let attributes : [NSAttributedString.Key : Any] = [
+            .font: font ?? normalFont!,
+            .foregroundColor: NSColor.labelColor]
+        let stringWidth = text.size(withAttributes: attributes).width
+        let startPoint = NSPoint(x: point.x - stringWidth, y: point.y)
+        text.draw(at: startPoint, withAttributes: attributes)
+    }
+    
+    private func stringWidth(_ text: String, _ font: NSFont? = nil) -> CGFloat {
+        let attributes : [NSAttributedString.Key : Any] = [
+            .font: font ?? normalFont!,
+            .foregroundColor: NSColor.labelColor]
+        let stringWidth = text.size(withAttributes: attributes).width
+        return stringWidth
+    }
+    
+
     override func prepareForInterfaceBuilder() {
-        dataModel = CalendarViewDataModel(year: 2019, month: 12)
+        dataModel = CalendarViewDataModel(year: 2027, month: 1)
     }
     
     func getBanner() -> String {
@@ -107,7 +153,6 @@ class CalendarView: NSView {
         let lastDay = dataModel!.dateInfoArray.last!
         let startBanner : String
         if firstDay.hebrewMonth == lastDay.hebrewMonth {
-            // must be February!
             startBanner = "\(firstDay.hebrewDay)"
         } else if firstDay.hebrewYear == lastDay.hebrewYear {
             startBanner = "\(firstDay.hebrewDay) \(hebrewMonthNameOf(firstDay))"
@@ -115,7 +160,7 @@ class CalendarView: NSView {
             startBanner = "\(firstDay.hebrewDay) \(hebrewMonthNameOf(firstDay)) \(firstDay.hebrewYear)"
         }
         let endBanner = "\(lastDay.hebrewDay) \(hebrewMonthNameOf(lastDay)) \(lastDay.hebrewYear)"
-        return  "\(startBanner) — \(endBanner)"
+        return "\(startBanner) — \(endBanner)"
     }
     
     private let HebrewMonthNames = [

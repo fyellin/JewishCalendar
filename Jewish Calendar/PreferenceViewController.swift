@@ -19,7 +19,7 @@ class PreferenceViewController: NSViewController {
     @IBOutlet weak var gregorianRadioButton: NSButton!
     @IBOutlet weak var julianRadioButton: NSButton!
     
-    var callbackWhenDone: (() -> Void)?
+    var callbackOnChange: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +28,22 @@ class PreferenceViewController: NSViewController {
     
     @IBAction func parshaButtonPushed(_ sender: NSButton) {
         Preference.showParsha.flip()
+        callbackOnChange?()
     }
     
     @IBAction func cholHamoedButtonPushed(_ sender: NSButton) {
         Preference.showCholHamoed.flip()
+        callbackOnChange?()
     }
     
     @IBAction func omerButtonPushed(_ sender: NSButton) {
         Preference.showOmer.flip()
+        callbackOnChange?()
     }
     
     @IBAction func locationButtonPushed(_ sender: NSButton) {
         Preference.inIsrael.set(value: (sender.tag == 1))
+        callbackOnChange?()
     }
     
     @IBAction func calendarButtonPushed(_ sender: NSButton) {
@@ -50,10 +54,7 @@ class PreferenceViewController: NSViewController {
             }
         }
         Preference.useJulian.set(value: (sender.tag == 1))
-    }
-    
-    @IBAction func closeButtonPushed(_ sender: Any) {
-        callbackWhenDone?()
+        callbackOnChange?()
     }
     
     func updateChoices() {

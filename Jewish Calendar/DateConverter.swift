@@ -14,9 +14,22 @@ struct YearMonthDay {
     let day: Int
 }
 
+enum Kvia : Int {
+    case short = 0
+    case normal = 1
+    case long = 2
+    
+    init(forHebrewYear year: Int) {
+        let hebrewYearLength = hebrew_elapsed_days(year + 1) - hebrew_elapsed_days(year)
+        assert((353...355).contains(hebrewYearLength) || (383...385).contains(hebrewYearLength))
+        let raw = (hebrewYearLength % 10) - 3
+        self.init(rawValue: raw)!
+    }
+}
+
 /* Given a secular date, calculate the number of days since January 0, 0000 (Gregorian)
  */
-func absolute_from_secular(_ year: Int, _ month: Int, _ day: Int, _ isJulian: Bool) -> Int {
+func absoluteFromSecular(_ year: Int, _ month: Int, _ day: Int, _ isJulian: Bool) -> Int {
     let xyear = year - 1
     var day_number = day + 31 * (month - 1)
     if (month > 2) {
@@ -41,51 +54,51 @@ func absolute_from_secular(_ year: Int, _ month: Int, _ day: Int, _ isJulian: Bo
 /* Given a Hebrew date, calculate the number of days since
  * January 0, 0001, Gregorian
  */
-private func absolute_from_hebrew(_ year: Int, _ month: Int, _ day: Int) -> Int {
+func absoluteFromHebrew(_ year: Int, _ month: Int, _ day: Int) -> Int {
     var sum = day + hebrew_elapsed_days(year) - 1373429
     if (month < 7) {
         let months = getHebrewMonthsInYear(year)
         for i in 7...months {
-            sum += getHebrewMonthLength(year, i)
+            sum += getHebrewMonthLength(year: year, month: i)
         }
         for i in 1..<month {
-            sum += getHebrewMonthLength(year, i)
+            sum += getHebrewMonthLength(year: year, month: i)
         }
     } else {
         for i in 7..<month {
-            sum += getHebrewMonthLength(year, i)
+            sum += getHebrewMonthLength(year: year, month: i)
         }
     }
     return sum
 }
 
-func secular_from_absolute(_ date: Int, _ isJulian: Bool) -> YearMonthDay {
+func secularFromAbsolute(_ date: Int, _ isJulian: Bool) -> YearMonthDay {
     var year = date/366
     var month = 1
-    while date >= absolute_from_secular(year + 1, 1, 1, isJulian) {
+    while date >= absoluteFromSecular(year + 1, 1, 1, isJulian) {
         year += 1
     }
-    while month < 12 && date >= absolute_from_secular(year, month + 1, 1, isJulian) {
+    while month < 12 && date >= absoluteFromSecular(year, month + 1, 1, isJulian) {
         month += 1
     }
-    let day = 1 + date - absolute_from_secular(year, month, 1, isJulian)
+    let day = 1 + date - absoluteFromSecular(year, month, 1, isJulian)
     return YearMonthDay(year: year, month: month, day: day)
 }
 
 
 /* Given an absolute date, calculate the Hebrew date */
-private func hebrew_from_absolute(_ date: Int) -> YearMonthDay {
+private func hebrewFromAbsolute(_ date: Int) -> YearMonthDay {
     let lowballSecularYear = date/366
     var year = lowballSecularYear + 3760
-    while (date >= absolute_from_hebrew(1 + year, 7, 1)) {
+    while (date >= absoluteFromHebrew(1 + year, 7, 1)) {
         year += 1
     }
     let months = getHebrewMonthsInYear(year)
     var month = 7
-    while date > absolute_from_hebrew(year, month, getHebrewMonthLength(year, month)) {
+    while date > absoluteFromHebrew(year, month, getHebrewMonthLength(year: year, month: month)) {
         month = 1 + (month % months)
     }
-    let day = 1 + date - absolute_from_hebrew(year, month, 1)
+    let day = 1 + date - absoluteFromHebrew(year, month, 1)
     return YearMonthDay(year:year, month:month, day:day)
 }
 
@@ -104,7 +117,7 @@ enum SecularMonth: Int {
 
 
 /* Number of days in a Hebrew month */
-private func getHebrewMonthLength(_ year: Int, _ month: Int) -> Int {
+private func getHebrewMonthLength(year: Int, month: Int) -> Int {
     let hebrewMonth = HebrewMonth(rawValue: month)
     switch (hebrewMonth!) {
     case .Tishrei,  .Shvat,  .Nissan, .Sivan, .Ab:
@@ -115,11 +128,11 @@ private func getHebrewMonthLength(_ year: Int, _ month: Int) -> Int {
         
     case .Cheshvan:
         // 29 days, unless it's a long year.
-        return (hebrew_year_length(year) % 10) == 5 ? 30 : 29
+        return Kvia(forHebrewYear: year) == .long ? 30 : 29
         
     case .Kislev:
         // 30 days, unless it's a short year.
-        return (hebrew_year_length(year) % 10) == 3 ? 29 : 30
+        return Kvia(forHebrewYear: year) == .short ? 29 : 30
         
     case .Adar:
         // Adar (non-leap year) has 29 days.  Adar I has 30 days.
@@ -128,7 +141,7 @@ private func getHebrewMonthLength(_ year: Int, _ month: Int) -> Int {
 }
 
 /* Number of days in a Julian or gregorian month */
-private func getSecularMonthLength(_ year: Int, _ month: Int, _ julianp: Bool) -> Int {
+private func getSecularMonthLength(year: Int, month: Int, isJulian: Bool) -> Int {
     let secularMonth = SecularMonth(rawValue: month)
     switch(secularMonth!) {
     case .January, .March, .May, .July, .August, .October, .December:
@@ -136,16 +149,16 @@ private func getSecularMonthLength(_ year: Int, _ month: Int, _ julianp: Bool) -
     case .April, .June, .September, .November:
         return 30
     case .February:
-        return isSecularLeapYear(year, julianp) ? 29 : 28
+        return isSecularLeapYear(year, isJulian) ? 29 : 28
     }
 }
 
 /* Is it a leap year in the gregorian/julian calendar? */
-func isSecularLeapYear(_ year: Int, _ julianp: Bool) -> Bool {
+func isSecularLeapYear(_ year: Int, _ isJulian: Bool) -> Bool {
     if ((year % 4) != 0) {
         return false
     }
-    if (julianp || (year % 400) == 0) {
+    if (isJulian || (year % 400) == 0) {
         return true
     }
     if ((year % 100) == 0) {
@@ -208,8 +221,8 @@ func todaysYearMonthDay(isJulian: Bool) -> YearMonthDay {
     let month = components.value(for: .month)!
     let day = components.value(for: .day)!
     if isJulian {
-        let absolute = absolute_from_secular(year, month, day, false)
-        return secular_from_absolute(absolute, true)
+        let absolute = absoluteFromSecular(year, month, day, false)
+        return secularFromAbsolute(absolute, true)
     } else {
         return YearMonthDay(year: year, month: month, day: day)
     }
@@ -226,19 +239,19 @@ struct DateResult {
     
     let hebrewMonthLength, secularMonthLength : Int
     let hebrew_leap_year_p, secular_leap_year_p : Bool
-    let kvia : Int
+    let kvia : Kvia
     let hebrewDayNumber : Int
     
     init(fromSecularYear year: Int, month: Int, day: Int, isJulian: Bool) {
-        let absolute = absolute_from_secular(year, month, day, isJulian)
-        let hebrewDate = hebrew_from_absolute(absolute)
+        let absolute = absoluteFromSecular(year, month, day, isJulian)
+        let hebrewDate = hebrewFromAbsolute(absolute)
         let secularDate = YearMonthDay(year: year, month: month, day: day)
         self.init(hebrewDate: hebrewDate, secularDate: secularDate, absolute: absolute, isJulian: isJulian)
     }
     
     init(fromAbsolute absolute: Int, isJulian: Bool) {
-        let hebrewDate = hebrew_from_absolute(absolute)
-        let secularDate = secular_from_absolute(absolute, isJulian)
+        let hebrewDate = hebrewFromAbsolute(absolute)
+        let secularDate = secularFromAbsolute(absolute, isJulian)
         self.init(hebrewDate: hebrewDate, secularDate: secularDate, absolute: absolute, isJulian: isJulian)
     }
     
@@ -250,11 +263,11 @@ struct DateResult {
         secularMonth = secularDate.month
         secularDay = secularDate.day
         absolute = xabsolute
-        hebrewMonthLength = getHebrewMonthLength(hebrewDate.year, hebrewDate.month)
-        secularMonthLength = getSecularMonthLength(secularDate.year, secularDate.month, isJulian)
+        hebrewMonthLength = getHebrewMonthLength(year: hebrewDate.year, month: hebrewDate.month)
+        secularMonthLength = getSecularMonthLength(year: secularDate.year, month: secularDate.month, isJulian: isJulian)
         hebrew_leap_year_p = isHebrewLeapYear(hebrewDate.year)
         secular_leap_year_p = isSecularLeapYear(secularDate.year, isJulian)
-        kvia = (hebrew_year_length(hebrewYear) % 10) - 3
-        hebrewDayNumber = absolute - absolute_from_hebrew(hebrewYear, 7, 1) + 1
+        kvia = Kvia(forHebrewYear: hebrewYear)
+        hebrewDayNumber = absolute - absoluteFromHebrew(hebrewYear, 7, 1) + 1
     }
 }

@@ -18,6 +18,8 @@
 		06A32F2E23068C16000714F8 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F2D23068C16000714F8 /* PreferenceViewController.swift */; };
 		06A32F3023072A83000714F8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F2F23072A83000714F8 /* Preferences.swift */; };
 		06A32F322307331A000714F8 /* CalendarViewDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A32F312307331A000714F8 /* CalendarViewDataModel.swift */; };
+		06DD1266230D0EC90070679D /* KeyboardShortcutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DD1265230D0EC90070679D /* KeyboardShortcutViewController.swift */; };
+		06DD126C230DD0220070679D /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 06DD126B230DD0220070679D /* Credits.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		06A32F2D23068C16000714F8 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
 		06A32F2F23072A83000714F8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		06A32F312307331A000714F8 /* CalendarViewDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewDataModel.swift; sourceTree = "<group>"; };
+		06DD1265230D0EC90070679D /* KeyboardShortcutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutViewController.swift; sourceTree = "<group>"; };
+		06DD126B230DD0220070679D /* Credits.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,9 +72,11 @@
 			isa = PBXGroup;
 			children = (
 				063E801323048E2C001EFA2C /* Main.storyboard */,
+				06DD1265230D0EC90070679D /* KeyboardShortcutViewController.swift */,
 				063E802023048EA0001EFA2C /* JewishCalendarViewController.swift */,
 				063E802223048EA0001EFA2C /* CalendarView.swift */,
 				06A32F312307331A000714F8 /* CalendarViewDataModel.swift */,
+				06A32F2F23072A83000714F8 /* Preferences.swift */,
 				06A32F2D23068C16000714F8 /* PreferenceViewController.swift */,
 				063E801E23048EA0001EFA2C /* DateConverter.swift */,
 				063E801F23048EA0001EFA2C /* Holidays.swift */,
@@ -79,7 +85,7 @@
 				063E801623048E2C001EFA2C /* Info.plist */,
 				063E801123048E2C001EFA2C /* Assets.xcassets */,
 				063E801723048E2C001EFA2C /* Jewish_Calendar.entitlements */,
-				06A32F2F23072A83000714F8 /* Preferences.swift */,
+				06DD126B230DD0220070679D /* Credits.html */,
 			);
 			path = "Jewish Calendar";
 			sourceTree = "<group>";
@@ -144,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				063E801223048E2C001EFA2C /* Assets.xcassets in Resources */,
+				06DD126C230DD0220070679D /* Credits.html in Resources */,
 				063E801523048E2C001EFA2C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,6 +165,7 @@
 				063E802B23048F7D001EFA2C /* AppDelegate.swift in Sources */,
 				063E802723048EA0001EFA2C /* CalendarView.swift in Sources */,
 				063E802523048EA0001EFA2C /* JewishCalendarViewController.swift in Sources */,
+				06DD1266230D0EC90070679D /* KeyboardShortcutViewController.swift in Sources */,
 				063E802423048EA0001EFA2C /* Holidays.swift in Sources */,
 				063E802623048EA0001EFA2C /* Parsha.swift in Sources */,
 				06A32F2E23068C16000714F8 /* PreferenceViewController.swift in Sources */,
