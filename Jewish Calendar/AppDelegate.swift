@@ -27,11 +27,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let controller = application.mainWindow?.contentViewController
         hebrewCalendarController = controller as? JewishCalendarViewController
     }
+    
 
     func applicationWillTerminate(_ aNotification: Notification) {
+        print("goodbye")
         // Insert code here to tear down your application
     }
-
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+    
     @IBAction func selectedGregorian(_ sender: NSMenuItem) {
         Preference.useJulian.set(value: false)
         updateMenuAndController()
