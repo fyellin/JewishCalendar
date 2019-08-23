@@ -113,12 +113,6 @@
                                                 <action selector="modifyFont:" target="Voe-Tx-rLC" id="rRt-U2-o7c"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="show" id="bSO-v8-vPk">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="showFont:" target="Voe-Tx-rLC" id="UaE-PR-tFP"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -128,7 +122,11 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Jewish_Calendar" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Jewish_Calendar" customModuleProvider="target">
+                    <connections>
+                        <outlet property="fontMenu" destination="nUP-PP-jPC" id="2HU-nJ-0nv"/>
+                    </connections>
+                </customObject>
                 <touchBar principalItem="D90-hc-RMQ" id="6o9-7C-hfi">
                     <touchBarItems>
                         <touchBarItem identifier="Hello" customizationLabel="Hello" id="D90-hc-RMQ">
@@ -155,9 +153,9 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Jewish Calendar" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Jewish Calendar" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" frameAutosaveName="JewishCalendar" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="600" height="450"/>
+                        <rect key="contentRect" x="197" y="240" width="750" height="500"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="3008" height="1669"/>
                         <value key="minSize" type="size" width="600" height="450"/>
                         <value key="maxSize" type="size" width="1200" height="800"/>
@@ -180,7 +178,7 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="JewishCalendarViewController" customModule="Jewish_Calendar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="747" height="500"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XNP-bX-00W" userLabel="Left">
@@ -206,8 +204,8 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-0R-ro5" userLabel="Middle">
-                                <rect key="frame" x="122" y="478" width="357" height="22"/>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-0R-ro5" userLabel="Middle">
+                                <rect key="frame" x="203" y="478" width="342" height="22"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" tag="-12" translatesAutoresizingMaskIntoConstraints="NO" id="38l-Hb-FWR">
                                         <rect key="frame" x="-6" y="-6" width="63" height="32"/>
@@ -222,7 +220,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="702-yE-S77">
-                                        <rect key="frame" x="50" y="-6" width="52" height="32"/>
+                                        <rect key="frame" x="47" y="-6" width="52" height="32"/>
                                         <buttonCell key="cell" type="push" title="◀" bezelStyle="rounded" alignment="center" borderStyle="border" tag="-1" inset="2" id="2ZJ-07-Acw">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -234,10 +232,7 @@
                                         </connections>
                                     </button>
                                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Pk-5j-xOd">
-                                        <rect key="frame" x="99" y="-2" width="105" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="5K2-cn-3pn"/>
-                                        </constraints>
+                                        <rect key="frame" x="93" y="-2" width="105" height="25"/>
                                         <popUpButtonCell key="cell" type="push" title="September" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="ZPk-HU-7Hv" id="Omt-KH-4p3">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
@@ -256,7 +251,7 @@
                                         </connections>
                                     </popUpButton>
                                     <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="50" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxJ-L5-8i4" userLabel="Year Editor">
-                                        <rect key="frame" x="206" y="0.0" width="50" height="22"/>
+                                        <rect key="frame" x="197" y="0.0" width="50" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="dEa-Vc-RSa"/>
                                         </constraints>
@@ -274,7 +269,7 @@
                                         </connections>
                                     </textField>
                                     <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="udF-Ps-haf">
-                                        <rect key="frame" x="255" y="-6" width="52" height="32"/>
+                                        <rect key="frame" x="243" y="-6" width="52" height="32"/>
                                         <buttonCell key="cell" type="push" title="►" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wsm-uZ-iEX">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -286,7 +281,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="rgJ-CD-IuN">
-                                        <rect key="frame" x="300" y="-6" width="63" height="32"/>
+                                        <rect key="frame" x="285" y="-6" width="63" height="32"/>
                                         <buttonCell key="cell" type="push" title="►►" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ndX-hS-QxC">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -316,7 +311,7 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KDO-VW-9p0" userLabel="Right">
-                                <rect key="frame" x="506" y="479" width="94" height="21"/>
+                                <rect key="frame" x="653" y="479" width="94" height="21"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ioj-f9-uFU" userLabel="Tools button">
                                         <rect key="frame" x="-6" y="-7" width="68" height="32"/>
@@ -348,28 +343,20 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="xgy-eD-Zay" customClass="CalendarView" customModule="Jewish_Calendar" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="460"/>
+                            <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgy-eD-Zay" customClass="CalendarView" customModule="Jewish_Calendar" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="750" height="470"/>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="KDO-VW-9p0" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="524-hE-TGc"/>
-                            <constraint firstItem="xgy-eD-Zay" firstAttribute="top" secondItem="RAE-0R-ro5" secondAttribute="bottom" constant="18" id="7Uc-ci-Zq9"/>
-                            <constraint firstItem="xgy-eD-Zay" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="8Ro-sE-LFT"/>
-                            <constraint firstItem="XNP-bX-00W" firstAttribute="top" secondItem="RAE-0R-ro5" secondAttribute="top" id="BaI-kr-isd"/>
-                            <constraint firstItem="XNP-bX-00W" firstAttribute="top" secondItem="KDO-VW-9p0" secondAttribute="top" id="LCZ-da-MnA"/>
-                            <constraint firstAttribute="trailing" secondItem="xgy-eD-Zay" secondAttribute="trailing" id="LQ8-vF-Ayc"/>
+                            <constraint firstItem="xgy-eD-Zay" firstAttribute="top" secondItem="RAE-0R-ro5" secondAttribute="bottom" constant="8" symbolic="YES" id="7Uc-ci-Zq9"/>
                             <constraint firstAttribute="bottom" secondItem="xgy-eD-Zay" secondAttribute="bottom" id="QAE-Fy-JSL"/>
                             <constraint firstAttribute="trailing" secondItem="xgy-eD-Zay" secondAttribute="trailing" id="UCD-kv-M1A"/>
                             <constraint firstItem="RAE-0R-ro5" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="VEt-EH-WDW"/>
-                            <constraint firstItem="KDO-VW-9p0" firstAttribute="trailing" secondItem="xgy-eD-Zay" secondAttribute="trailing" id="b4f-1D-V4Z"/>
                             <constraint firstItem="RAE-0R-ro5" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="cCp-dq-TNF"/>
                             <constraint firstItem="XNP-bX-00W" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="dd7-pV-f8R"/>
-                            <constraint firstItem="RAE-0R-ro5" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="hwX-Ea-yX3"/>
-                            <constraint firstAttribute="bottom" secondItem="xgy-eD-Zay" secondAttribute="bottom" id="mre-Gy-0bl"/>
+                            <constraint firstAttribute="trailing" secondItem="KDO-VW-9p0" secondAttribute="trailing" id="jUc-bz-aTL"/>
                             <constraint firstItem="xgy-eD-Zay" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="poL-XD-Ro7"/>
-                            <constraint firstItem="RAE-0R-ro5" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="q9v-lx-bCG"/>
-                            <constraint firstItem="XNP-bX-00W" firstAttribute="baseline" secondItem="KDO-VW-9p0" secondAttribute="baseline" id="sBm-TS-EIG"/>
                             <constraint firstItem="XNP-bX-00W" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="vp4-gA-Rh4"/>
                         </constraints>
                     </view>
@@ -377,8 +364,8 @@
                         <touchBarItems>
                             <touchBarItem id="j95-gw-k6Q" userLabel="Previous Year">
                                 <viewController key="viewController" id="onM-Ko-MxX">
-                                    <button key="view" verticalHuggingPriority="750" tag="-12" translatesAutoresizingMaskIntoConstraints="NO" id="vlI-4v-J0g">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" tag="-12" translatesAutoresizingMaskIntoConstraints="NO" id="vlI-4v-J0g">
+                                        <rect key="frame" x="6" y="-4" width="60" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="LNr-1o-gPr"/>
                                         </constraints>
@@ -395,8 +382,8 @@
                             </touchBarItem>
                             <touchBarItem id="lEr-VV-nqo" userLabel="Previous Month">
                                 <viewController key="viewController" id="iPf-C4-hSm">
-                                    <button key="view" verticalHuggingPriority="750" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qdV-uy-0lL">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qdV-uy-0lL">
+                                        <rect key="frame" x="6" y="-4" width="60" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="WEL-UE-kOw"/>
                                         </constraints>
@@ -413,8 +400,8 @@
                             </touchBarItem>
                             <touchBarItem id="Vzh-MX-WYb" userLabel="Next Month">
                                 <viewController key="viewController" id="Z5A-vz-NcS">
-                                    <button key="view" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="kxE-Yf-rCN">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="kxE-Yf-rCN">
+                                        <rect key="frame" x="6" y="-4" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoForwardTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Drr-8P-WuE">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -429,8 +416,8 @@
                             </touchBarItem>
                             <touchBarItem id="Uap-1e-onD" userLabel="Next Year">
                                 <viewController key="viewController" id="lXm-j0-zVl">
-                                    <button key="view" verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="R8Z-XZ-wZ1">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="R8Z-XZ-wZ1">
+                                        <rect key="frame" x="6" y="-4" width="60" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="veg-eC-zWP"/>
                                         </constraints>
@@ -464,7 +451,7 @@
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="rRM-MH-DPV"/>
             </objects>
-            <point key="canvasLocation" x="-46" y="156.5"/>
+            <point key="canvasLocation" x="-119.5" y="156"/>
         </scene>
         <!--Preference View Controller-->
         <scene sceneID="o67-xL-Hed">
@@ -727,9 +714,8 @@
                                                             <rect key="frame" x="122" y="1" width="114" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1e6-K6-p1P">
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="1e6-K6-p1P">
                                                                     <rect key="frame" x="0.0" y="0.0" width="114" height="17"/>
-                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="RyX-B9-Oby">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -737,6 +723,11 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="1e6-K6-p1P" firstAttribute="leading" secondItem="7qO-T1-oMi" secondAttribute="leading" constant="2" id="77r-mh-yMQ"/>
+                                                                <constraint firstItem="1e6-K6-p1P" firstAttribute="centerX" secondItem="7qO-T1-oMi" secondAttribute="centerX" id="YFH-Rs-qb8"/>
+                                                                <constraint firstItem="1e6-K6-p1P" firstAttribute="centerY" secondItem="7qO-T1-oMi" secondAttribute="centerY" id="zBQ-xA-Fiz"/>
+                                                            </constraints>
                                                             <connections>
                                                                 <outlet property="textField" destination="1e6-K6-p1P" id="VaD-ZK-MdT"/>
                                                             </connections>

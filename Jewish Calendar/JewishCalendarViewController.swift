@@ -46,7 +46,9 @@ class JewishCalendarViewController: NSViewController {
         let today = todaysYearMonthDay(isJulian: Preference.useJulian.get())
         (currentYear, currentMonth) = (today.year, today.month)
 
-        // foobar()
+        if (_isDebugAssertConfiguration()) {
+            // printGoldenInformation()
+        }
         dataDidChange()
     }
     
@@ -142,9 +144,9 @@ class JewishCalendarViewController: NSViewController {
     
     fileprivate func turnOffSelectionOnYearEditor() {
         if yearEditor.currentEditor()?.selectedRange != nil {
-            let labelLength = yearEditor!.stringValue.count
             DispatchQueue.main.async {
-                self.yearEditor.currentEditor()?.selectedRange = NSRange(location: labelLength, length: 0)
+                self.yearEditor.currentEditor()?.selectedRange =
+                    NSRange(location: self.yearEditor.stringValue.count, length: 0)
             }
         }
     }
@@ -169,48 +171,3 @@ extension JewishCalendarViewController: NSTextFieldDelegate {
         turnOffSelectionOnYearEditor()
     }
 }
-
-extension JewishCalendarViewController {
-    func checkHolidays() {
-        let years = [5780, 5781, 5782, 5784, 5785, 5786, 5787, 5788, 5789, 5790, 5795, 5797, 5803, 5812]
-        for year in years {
-            let yearStart = absoluteFromHebrew(year, 7, 1)
-            let yearEnd = absoluteFromHebrew(year + 1, 7, 1)
-            print(year, yearStart, yearEnd)
-            for absolute in yearStart ..< yearEnd {
-                let dr = DateResult(fromAbsolute: absolute, isJulian: false)
-                assert(dr.absolute == absolute)
-                assert(dr.hebrewYear == year)
-                for inIsrael in [false, true] {
-                    let a = FindHolidays(year: dr.hebrewYear, month: dr.hebrewMonth, day: dr.hebrewDay,
-                                     absolute: absolute, kvia: dr.kvia, isLeapYear: dr.hebrew_leap_year_p,
-                                     dayNumber: dr.hebrewDayNumber,
-                                     inIsrael: inIsrael, showParsha: true, showOmer: true, showChol: true)
-                    let b = FindHolidays(year: dr.hebrewYear, month: dr.hebrewMonth, day: dr.hebrewDay,
-                                     absolute: absolute, kvia: dr.kvia, isLeapYear: dr.hebrew_leap_year_p,
-                                     dayNumber: dr.hebrewDayNumber,
-                                     inIsrael: inIsrael, showParsha: true, showOmer: true, showChol: true)
-                    if a != b {
-                        print (inIsrael, dr.hebrewYear, dr.hebrewMonth, dr.hebrewDay, a, b)
-                    }
-                }
-            }
-        }
-    }
-}
-/*****
- 5780 120 Monday long false
- 5781 600 Saturday short false
- 5782 211 Tuesday normal true
- 5784 601 Saturday short true
- 5785 420 Thursday long false
- 5786 210 Tuesday normal false
- 5787 621 Saturday long true
- 5788 620 Saturday long false
- 5789 410 Thursday normal false
- 5790 101 Monday short true
- 5795 421 Thursday long true
- 5797 100 Monday short false
- 5803 121 Monday long true
- 5812 401 Thursday short true
-******/

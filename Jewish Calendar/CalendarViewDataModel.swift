@@ -48,7 +48,7 @@ class CalendarViewDataModel {
             let holidays = FindHolidays(
                 year: result.hebrewYear, month: result.hebrewMonth, day: result.hebrewDay + offset,
                 absolute: result.absolute + offset,
-                kvia: result.kvia, isLeapYear: result.hebrew_leap_year_p, dayNumber: result.hebrewDayNumber + offset,
+                kvia: result.kvia, isLeapYear: result.isHebrewLeapYear, dayNumber: result.hebrewDayNumber + offset,
                 inIsrael: inIsrael, showParsha: showParsha, showOmer: showOmer, showChol: showChol)
                 // print(secular_day, result.hebrew_year, result.hebrew_month_name, hebrew_day, hebrew_day_number, holidays)
             let dateInfo = DateInfo(

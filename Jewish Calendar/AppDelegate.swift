@@ -10,17 +10,31 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    
-    var jewishCalendarController : JewishCalendarViewController?
+    @IBOutlet weak var fontMenu: NSMenuItem!
 
+    var jewishCalendarController : JewishCalendarViewController?
+    
+    let showFontMenu = true
+    let enableFontMenu = true
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let controller = NSApplication.shared.mainWindow?.contentViewController
         jewishCalendarController = controller as? JewishCalendarViewController
-        NSFontManager.shared.setSelectedFont(NSFont.systemFont(ofSize: 13.0), isMultiple: false)
+        fontMenu.isEnabled = enableFontMenu
+        fontMenu.isHidden = !showFontMenu
+        
+        let window = NSApplication.shared.mainWindow
+        window?.windowController?.shouldCascadeWindows = false
+        window?.setFrameUsingName("JewishCalendar")
+        window?.setFrameAutosaveName("JewishCalendar")
     }
-
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
     
     @IBAction func handlePrintMenu(_ sender: Any) {
@@ -29,12 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    @IBAction func showFont(_ sender: Any) {
-        print(NSFontManager.shared.selectedFont ?? "none")
-    }
-    
-    @IBAction func modifyFont(_ sender: Any) {
-        NSFontManager.shared.modifyFont(sender)
-        jewishCalendarController!.calendarView.needsDisplay = true
+    @IBAction func modifyFont(_ sender: NSMenuItem) {
+        // NSFontManager.shared.modifyFont(sender)
+        jewishCalendarController?.calendarView.modifyFont(sender)
     }
 }

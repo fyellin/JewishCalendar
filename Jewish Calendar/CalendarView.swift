@@ -11,26 +11,29 @@ import Cocoa
 
 @IBDesignable
 class CalendarView: NSView {
+    @IBInspectable
+    var fontSize : CGFloat = 13
+
     static let shortDayNames = DateFormatter().shortWeekdaySymbols!
     
     let boldFontSizeMultiplier = CGFloat(1.2)
     let captionFontSizeMultiplier = CGFloat(1.4)
 
-    var fontSize : CGFloat!
-    var normalFont, boldFont, captionFont: NSFont!
+    var normalFont,weekdayFont, hebrewDateFont, captionFont: NSFont!
     
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    func modifyFont(_ sender: NSMenuItem) {
+        switch (sender.tag) {
+        case 3:
+            fontSize += 1
+        case 4:
+            fontSize = max(5, fontSize - 1)
+        default:
+            break
+        }
+        print("Set Font Size = \(fontSize)")
+        needsDisplay = true
     }
     
-    required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-    }
-    
-    private func initialize() {
-        addObserver(NSFontManager.shared, forKeyPath: "selectedFont", options: [.new], context: nil)
-    }
-        
     var dataModel : CalendarViewDataModel? = nil {
         didSet {
             needsDisplay = true
@@ -40,18 +43,16 @@ class CalendarView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        fontSize = NSFontManager.shared.selectedFont?.pointSize ?? 13
         normalFont = NSFont.systemFont(ofSize: fontSize)
-        boldFont = NSFont.boldSystemFont(ofSize: fontSize * boldFontSizeMultiplier)
+        hebrewDateFont = NSFont.boldSystemFont(ofSize: fontSize)
+        weekdayFont = NSFont.boldSystemFont(ofSize: fontSize * boldFontSizeMultiplier)
         captionFont = NSFont.boldSystemFont(ofSize: fontSize * captionFontSizeMultiplier)
         
-        let captionTop = self.bounds.maxY
-        let captionBottom = captionTop - captionFont.pointSize - 4
+        let captionBottom = bounds.maxY - captionFont.pointSize - 4
 
-        let weekdayInfoTop = captionBottom
-        let weekdayInfoBottom = weekdayInfoTop - boldFont.pointSize - 5
+        let weekdayInfoBottom = captionBottom - weekdayFont.pointSize - 8
         
-        let dateInfoTop = weekdayInfoBottom - 4
+        let dateInfoTop = weekdayInfoBottom - 6
         let dateInfoBottom = CGFloat(2.0)
         let dateInfoHeight = (dateInfoTop - dateInfoBottom) / 6
         
@@ -69,9 +70,12 @@ class CalendarView: NSView {
             }
         }
         
+        // Draw the banner
         drawCenteredAt(getBanner(), NSPoint(x: bounds.midX, y: captionBottom), captionFont)
+        
+        // Draw the weekdays
         for (i, dayName) in CalendarView.shortDayNames.enumerated() {
-            drawCenteredAt(dayName, NSPoint(x: rectArray[i].midX, y: weekdayInfoBottom), boldFont)
+            drawCenteredAt(dayName, NSPoint(x: rectArray[i].midX, y: weekdayInfoBottom), weekdayFont)
         }
         
         let dayOfWeekStart = dataModel!.dayOfWeekFirst.rawValue
@@ -82,53 +86,87 @@ class CalendarView: NSView {
         }
     }
     
+    enum Justification {
+        case left, center, right
+    }
+    
     private func drawOneDay(_ dayOfMonth: Int, _ rect: NSRect, _ dateInfo: DateInfo) {
         NSBezierPath(rect: rect).stroke()
-        let irect = rect.insetBy(dx: 1.0, dy: 2.0)
+        let irect = rect.insetBy(dx: 1.0, dy: 1.0)
         let lineSpacing = irect.height / (4 + boldFontSizeMultiplier)
         let top = irect.maxY - (boldFontSizeMultiplier * lineSpacing)
+        
         
         let secularDayString = String(dayOfMonth)
         let hebrewDayString = "\(dateInfo.hebrewDay) \(hebrewMonthNameOf(dateInfo))"
         let holidays = dateInfo.holidays
-        drawCenteredAt(secularDayString, NSPoint(x: irect.midX, y: top), boldFont)
-        drawCenteredAt(hebrewDayString, NSPoint(x: irect.midX, y: top - lineSpacing))
-        for (i, holiday) in holidays.enumerated() {
-            if holiday.contains("/") && holidays.count < 3 {
-                if stringWidth(holiday) > irect.width {
+        drawCenteredAt(secularDayString, NSPoint(x: irect.midX, y: top), weekdayFont)
+        drawCenteredAt(hebrewDayString, NSPoint(x: irect.midX, y: top - lineSpacing), hebrewDateFont)
+        
+        guard !holidays.isEmpty else { return }
+        var lines = holidays.map{(text: $0, justification: Justification.center)}
+        for i in (0..<lines.count).reversed() {
+            let holiday = lines[i].text
+            if stringWidth(holiday) > irect.width {
+                if lines.count < 3 && holiday.contains("/") {
                     let slashIndex = holiday.firstIndex(of: "/")!
                     let prefix = String(holiday[...slashIndex])
                     let suffix = String(holiday[holiday.index(after: slashIndex)...])
-                    drawLeftAt(String(prefix),
-                               NSPoint(x: irect.minX, y: top - CGFloat(i + 2) * lineSpacing))
-                    drawRightAt(String(suffix),
-                                NSPoint(x: irect.maxX, y: top - CGFloat(i + 3) * lineSpacing))
-                    continue
+                    lines[i] = (text: prefix, justification: .left)
+                    lines.insert((text: suffix, justification: .right), at: i + 1)
+                } else if holiday.starts(with: "Yom ") {
+                    lines[i].text = holiday.replacingOccurrences(of: "Yom", with: "Y. ")
+                } else if holiday.starts(with: "Rosh ") {
+                    lines[i].text = holiday.replacingOccurrences(of: "Rosh", with: "R. ")
+                } else if holiday.contains("evening") {
+                    lines[i].text = holiday.replacingOccurrences(of: "evening", with: "even.")
+                } else if lines.count < 3 && holiday.contains(" ") {
+                    let spaceIndex = holiday.firstIndex(of: " ")!
+                    let prefix = String(holiday[..<spaceIndex])
+                    let suffix = String(holiday[holiday.index(after: spaceIndex)...])
+                    lines[i] = (text: prefix, justification: .left)
+                    lines.insert((text: suffix, justification: .right), at: i + 1)
                 }
             }
-            drawCenteredAt(holiday, NSPoint(x: irect.midX, y: top - CGFloat(i + 2) * lineSpacing))
+        }
+        for (i, line) in lines.enumerated() {
+            switch line.justification {
+            case .left:
+                drawLeftAt(String(line.text),
+                           NSPoint(x: irect.minX, y: top - CGFloat(i + 2) * lineSpacing))
+            case .right:
+                drawRightAt(String(line.text),
+                            NSPoint(x: irect.maxX, y: top - CGFloat(i + 2) * lineSpacing))
+            case .center:
+                drawCenteredAt(line.text, NSPoint(x: irect.midX, y: top - CGFloat(i + 2) * lineSpacing))
+
+            }
         }
     }
     
-    private func drawCenteredAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+    private func drawCenteredAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil, _ color: NSColor? = nil) {
+        let font = font ?? normalFont!
+        let color = color ?? NSColor.textColor
         let attributes : [NSAttributedString.Key : Any] = [
-            .font: font ?? normalFont!,
-            .foregroundColor: NSColor.labelColor]
+            .font: font,
+            .foregroundColor: color]
         let stringWidth = text.size(withAttributes: attributes).width
         let startPoint = NSPoint(x: point.x - stringWidth / 2, y: point.y)
         text.draw(at: startPoint, withAttributes: attributes)
     }
     
     private func drawLeftAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+        let font = font ?? normalFont!
         let attributes : [NSAttributedString.Key : Any] = [
-            .font: font ?? normalFont!,
+            .font: font,
             .foregroundColor: NSColor.labelColor]
         text.draw(at: point, withAttributes: attributes)
     }
     
     private func drawRightAt(_ text: String, _ point: NSPoint, _ font: NSFont? = nil) {
+        let font = font ?? normalFont!
         let attributes : [NSAttributedString.Key : Any] = [
-            .font: font ?? normalFont!,
+            .font: font,
             .foregroundColor: NSColor.labelColor]
         let stringWidth = text.size(withAttributes: attributes).width
         let startPoint = NSPoint(x: point.x - stringWidth, y: point.y)
@@ -136,9 +174,8 @@ class CalendarView: NSView {
     }
     
     private func stringWidth(_ text: String, _ font: NSFont? = nil) -> CGFloat {
-        let attributes : [NSAttributedString.Key : Any] = [
-            .font: font ?? normalFont!,
-            .foregroundColor: NSColor.labelColor]
+        let font = font ?? normalFont!
+        let attributes : [NSAttributedString.Key : Any] = [.font: font]
         let stringWidth = text.size(withAttributes: attributes).width
         return stringWidth
     }
@@ -170,7 +207,7 @@ class CalendarView: NSView {
     ]
     
     private func hebrewMonthNameOf(_ dateInfo: DateInfo)  -> String{
-        let hebrewMonthName = ((dateInfo.hebrewMonth < 12) || isHebrewLeapYear(dateInfo.hebrewYear)) ?
+        let hebrewMonthName = ((dateInfo.hebrewMonth < 12) || isLeapYear(hebrewYear: dateInfo.hebrewYear)) ?
             HebrewMonthNames[dateInfo.hebrewMonth] :
             HebrewMonthNames[14]
         return hebrewMonthName

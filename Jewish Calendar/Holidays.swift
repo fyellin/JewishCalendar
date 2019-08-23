@@ -222,28 +222,19 @@ func FindHolidays(year: Int, month _month: Int, day: Int, absolute: Int,
         }
         
         /* Adar II */
-    case (13, 11...12):
-        // Ta'anit ester is on the 13th.  But shabbat moves it back to
-        // Thursday.
-        if (weekday == .Thursday)  {
+    case (13, 7...13):
+        if (day == 11 && weekday == .Thursday) || (day == 13 && !isShabbat) {
             holidays.append("Ta'anit Ester")
         }
-        fallthrough
-        
-    case (13, 7...10):
-        // The Shabbat before purim is Shabbat Zachor
-        if (isShabbat) {
+        if isShabbat {
             holidays.append("Sh. Zachor")
         }
-        
-    case (13, 13):
-        holidays.append(isShabbat ? "Sh. Zachor" : "Erev Purim")
-        // It's Ta'anit Esther, unless it's a Friday or Saturday
-        if (weekday != .Friday && weekday != .Saturday) {
-            holidays.append("Ta'anit Ester")
+        if (day == 13) {
+            holidays.append("Erev Purim")
         }
         
     case (13, 14):
+        // Tuesday, Thursday, Friday, or Sunday
         holidays.append("Purim")
         
     case (13, 15):
