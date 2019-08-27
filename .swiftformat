@@ -1,0 +1,35 @@
+--allman false
+--binarygrouping none
+--closingparen same-line
+--commas inline
+--conflictmarkers reject
+--decimalgrouping none
+--elseposition same-line
+--empty void
+--exponentcase lowercase
+--exponentgrouping disabled
+--fractiongrouping disabled
+--fragment false
+--header "{file}\nCopyright (c) {year} Frank Yellin\nCreated on {created}."
+--hexgrouping none
+--hexliteralcase uppercase
+--ifdef indent
+--importgrouping alphabetized
+--indent 2
+--indentcase false
+--linebreaks lf
+--octalgrouping none
+--operatorfunc space
+--patternlet hoist
+--ranges no-space
+--self init-only
+--selfrequired 
+--semicolons never
+--stripunusedargs closure-only
+--trailingclosures 
+--trimwhitespace always
+--wraparguments before-first
+--wrapcollections before-first
+--xcodeindentation disabled
+--enable isEmpty
+

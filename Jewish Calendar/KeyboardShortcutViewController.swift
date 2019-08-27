@@ -1,54 +1,46 @@
-//
-//  KeyboardShortcutViewController.swift
-//  Jewish Calendar
-//
-//  Created by Frank Yellin on 8/20/19.
-//  Copyright © 2019 Frank Yellin. All rights reserved.
-//
+// KeyboardShortcutViewController.swift
+// Copyright (c) 2019 Frank Yellin.
 
 import Cocoa
 
 class KeyboardShortcutViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
-    
-    @IBOutlet weak var tableView: NSTableView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Handled by the storyboard
-        // tableView.dataSource = self
-        // tableView.delegate = self
-        for tableColumn in tableView.tableColumns {
-            tableColumn.headerCell.alignment = .center
-        }
+  @IBOutlet var tableView: NSTableView!
+
+  override func viewDidLoad() {
+    // We are set up as the TableView's delegate and datasource in the storyboard
+    super.viewDidLoad()
+
+    // It's ugly that I have to set the font and alignment here, rather than in the storyboard
+    let font = NSFont.boldSystemFont(ofSize: 15)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .center
+    for tableColumn in tableView.tableColumns {
+      tableColumn.headerCell.alignment = .center
+      tableColumn.headerCell.attributedStringValue =
+        NSAttributedString(
+          string: tableColumn.title,
+          attributes: [.font: font, .paragraphStyle: paragraphStyle])
     }
-    
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return shortcutData.count
+  }
+
+  func numberOfRows(in tableView: NSTableView) -> Int {
+    return shortcutData.count
+  }
+
+  let shortcutData: [(name: String, meaning: String)] = [
+    ("◀", "previous month"),
+    ("▶", "next month"),
+    ("▼", "previous year"),
+    ("▲", "next year"),
+    ("⌘T", "today")
+  ]
+
+  func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+    // Note, cocoa bindings insure that this object gets shown in the table cell.
+    if tableView.tableColumns[0] == tableColumn {
+      return shortcutData[row].name
+    } else {
+      return shortcutData[row].meaning
     }
-    
-    let shortcutData = [
-        ("◀",   "previous month"),
-        ("▶",   "next month"),
-        ("▼",   "previous year"),
-        ("▲",   "next year"),
-        ("⌘T",  "today"),
-    ]
-    
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let id : String
-        let value : String
-        if tableColumn == tableView.tableColumns[0] {
-            id = "shortcut"
-            value = shortcutData[row].0
-        } else {
-            id = "meaning"
-            value = shortcutData[row].1
-        }
-        let view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(id), owner: nil) as? NSTableCellView
-        view?.textField?.stringValue = value
-        if id == "shortcut" {
-            view?.textField?.alignment = .center
-        }
-        return view
-    }
+  }
 }
