@@ -84,11 +84,15 @@ class PreferenceViewController: NSViewController {
         
         let alert = NSAlert()
         alert.messageText = "Are you sure?"
-        alert.informativeText = "Please don't use the Julian calendar unless you understand " +
-            "the difference between the Gregorian and Julian calendar. " +
-            "This option only makes sense for dates before 1927 in rare cases, and before " +
-            "1582 in much of Europe.\n\n" +
-            "Today's Julian date is \(date).  If you are confused, please hit 'cancel'."
+        alert.informativeText = """
+            Clicking here is probably a mistake. \
+            Please don't use this option unless you understand the difference between \
+            the Gregorian and the Julian calendar.\n
+            Most of Europe switched from the Julian to the Gregorian calendar in 1582, \
+            Great Britain (including its American colonies) switched in 1752, \
+            and Turkey in 1926.\n
+            Today's date in the Julian calendar is \(date).  If you are confused, please hit 'Cancel'.
+            """
         alert.alertStyle = .critical
         alert.addButton(withTitle: "Cancel")
         alert.addButton(withTitle: "OK")
