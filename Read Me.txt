@@ -1,0 +1,32 @@
+﻿Jewish Calendar v2.1.2
+by Avi Drissman, drissman@acm.org
+originally by Frank Yellin, fy@fyellin.com
+http://www.drissman.com/avi/mac/
+
+Requirements
+A Macintosh running Mac OS 8.6 or later with CarbonLib at least v1.3, or Mac OS X.
+
+Version History
+Version 2.1 (24 September 2000)
+Carbonized it (fizzzzzzzzzz....)
+
+Version 2.1.1 (27 December 2001)
+Small arrows in year picker dialog now work properly under Mac OS X
+New icon (thanks to Jomy Muttathil)
+Adjustment to Yom HaShoah date calculation (thanks to Ben Stitz)
+Minor tweaks here and there
+
+Version 2.1.2 (16 April 2002)
+Remembers menu settings (Diaspora/Israel, Gregorian/Julian, etc.) and page setup
+Uses sheets for printing UI
+
+Kudos
+Jomy Muttathil for the icon
+Ben Stitz for the information about Yom HaShoah date calculations (as of 1997, if Yom HaShoah falls on a Sunday, it's bumped to the following Monday so that organizers don't have to work on Saturday to prepare)
+
+Legal stuff
+The application Jewish Calendar is freeware. Please feel free to give a copy to anyone you wish. You are not allowed to charge any fees for distributing it without express written consent from Avi Drissman.
+
+Avi Drissman will not be held liable for any damage caused by the application Jewish Calendar. Even though Avi Drissman has worked his darnedest to try to eliminate all problems in the application, some may still exist, so you use this application at your own risk. If you don't like it, erase it. That is the only recourse you have if Jewish Calendar does not suit your needs.
+
+The application and this documentation are copyright © 2001–2 Avi Drissman and Frank Yellin. All rights reserved.

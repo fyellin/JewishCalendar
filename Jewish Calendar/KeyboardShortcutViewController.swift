@@ -23,24 +23,23 @@ class KeyboardShortcutViewController: NSViewController, NSTableViewDelegate, NST
     }
   }
 
-  func numberOfRows(in tableView: NSTableView) -> Int {
-    return shortcutData.count
-  }
-
-  let shortcutData: [(name: String, meaning: String)] = [
-    ("◀", "previous month"),
-    ("▶", "next month"),
-    ("▼", "previous year"),
-    ("▲", "next year"),
-    ("⌘T", "today")
-  ]
-
-  func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-    // Note, cocoa bindings insure that this object gets shown in the table cell.
-    if tableView.tableColumns[0] == tableColumn {
-      return shortcutData[row].name
-    } else {
-      return shortcutData[row].meaning
+  @objcMembers
+  class ShortcutInfo: NSObject {
+    let name: String
+    let meaning: String
+    
+    init(_ name: String, _ meaning: String) {
+      self.name = name
+      self.meaning = meaning
     }
   }
+  
+  /** The table is bound to the information here. */
+  @objc let shortcuts: [ShortcutInfo] = [
+    ShortcutInfo("◀", "previous month"),
+    ShortcutInfo("▶", "next month"),
+    ShortcutInfo("▼", "previous year"),
+    ShortcutInfo("▲", "next year"),
+    ShortcutInfo("⌘T", "today"),
+  ]
 }

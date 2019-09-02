@@ -686,7 +686,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="903-3W-WrB" name="value" keyPath="objectValue" id="7q5-wW-CM8"/>
+                                                                        <binding destination="903-3W-WrB" name="value" keyPath="objectValue.name" id="ouB-WR-bxW"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -722,7 +722,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="T7s-rr-DGY" name="value" keyPath="objectValue" id="KBz-Vs-i34"/>
+                                                                        <binding destination="T7s-rr-DGY" name="value" keyPath="objectValue.meaning" id="l6R-69-Waf"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -734,6 +734,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <binding destination="oRZ-LG-CQt" name="content" keyPath="arrangedObjects" id="6nH-fX-Kk8"/>
                                                 <outlet property="dataSource" destination="G55-Ta-ikT" id="Ybv-bg-hK8"/>
                                                 <outlet property="delegate" destination="G55-Ta-ikT" id="TF2-Xh-GGh"/>
                                             </connections>
@@ -772,6 +773,11 @@
                     </connections>
                 </viewController>
                 <customObject id="iOQ-hl-6sO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController id="oRZ-LG-CQt">
+                    <connections>
+                        <binding destination="G55-Ta-ikT" name="contentArray" keyPath="self.shortcuts" id="ihT-8q-4gr"/>
+                    </connections>
+                </arrayController>
             </objects>
             <point key="canvasLocation" x="585" y="321"/>
         </scene>
