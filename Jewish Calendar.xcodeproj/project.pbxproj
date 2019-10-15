@@ -403,6 +403,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3120.0;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -410,6 +411,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -425,6 +427,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3120.0;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -432,6 +435,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
