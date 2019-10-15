@@ -22,6 +22,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window?.windowController?.shouldCascadeWindows = false
     window?.setFrameUsingName("JewishCalendar")
     window?.setFrameAutosaveName("JewishCalendar")
+    if #available(OSX 10.12.2, *) {
+      NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
+    }
+
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {

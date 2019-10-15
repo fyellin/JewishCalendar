@@ -79,6 +79,15 @@ class JewishCalendarViewController: NSViewController {
     (currentYear, currentMonth, _) = todaysYearMonthDay(calendar)
     dataDidChange()
   }
+  
+  /// Called when the "today" button is clicked
+  @IBAction func buttonPressed(_ sender: Any) {
+    let calendar = SecularCalendar.forUsingJulian(Preference.useJulian.get())
+    (currentYear, currentMonth, _) = todaysYearMonthDay(calendar)
+    dataDidChange()
+  }
+
+
 
   // MARK: Segues
 
@@ -165,5 +174,73 @@ extension NSTextView {
 extension JewishCalendarViewController: NSTextFieldDelegate {
   func controlTextDidEndEditing(_ obj: Notification) {
     turnOffSelectionOnYearEditor()
+  }
+}
+
+@available(OSX 10.12.2, *)
+extension NSTouchBarItem.Identifier {
+  static let lastYearItem = NSTouchBarItem.Identifier("com.jewcal.LastYear")
+  static let lastMonthItem = NSTouchBarItem.Identifier("com.jewcal.LastMonth")
+  static let nextYearItem = NSTouchBarItem.Identifier("com.jewcal.NextYear")
+  static let nextMonthItem = NSTouchBarItem.Identifier("com.jewcal.NextMonth")
+  static let todayItem = NSTouchBarItem.Identifier("com.jewcal.Today")
+
+}
+
+@available(OSX 10.12.2, *)
+extension NSTouchBar.CustomizationIdentifier {
+  static let touchBar = NSTouchBar.CustomizationIdentifier("com.jewcal.JewishCalendarViewController.touchbar")
+}
+
+
+@available(OSX 10.12.2, *)
+extension JewishCalendarViewController: NSTouchBarDelegate {
+  override func makeTouchBar() -> NSTouchBar? {
+      let touchBar = NSTouchBar()
+      touchBar.delegate = self
+      touchBar.customizationIdentifier = .touchBar
+    touchBar.defaultItemIdentifiers = [
+      .todayItem, .fixedSpaceSmall,.lastYearItem, .lastMonthItem,
+      .nextMonthItem, .nextYearItem, .flexibleSpace, .otherItemsProxy]
+      return touchBar
+  }
+  
+  func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) ->
+    NSTouchBarItem? {
+      let custom = NSCustomTouchBarItem(identifier: identifier)
+
+      switch identifier {
+      case NSTouchBarItem.Identifier.lastYearItem:
+        let button = NSButton(image: NSImage(named: NSImage.touchBarRewindTemplateName)!,
+                 target: self, action:#selector(changeMonthByDelta(_:)))
+        button.tag = -12
+        custom.view = button
+
+      case NSTouchBarItem.Identifier.nextYearItem:
+          let button = NSButton(image: NSImage(named: NSImage.touchBarFastForwardTemplateName)!,
+                   target: self, action:#selector(changeMonthByDelta(_:)))
+          button.tag = +12
+          custom.view = button
+
+      case NSTouchBarItem.Identifier.lastMonthItem:
+        let button = NSButton(image: NSImage(named: NSImage.goBackTemplateName)!,
+                 target: self, action:#selector(changeMonthByDelta(_:)))
+        button.tag = -1
+        custom.view = button
+
+      case NSTouchBarItem.Identifier.nextMonthItem:
+        let button = NSButton(image: NSImage(named: NSImage.goForwardTemplateName)!,
+                 target: self, action:#selector(changeMonthByDelta(_:)))
+        button.tag = +1
+        custom.view = button
+
+      case NSTouchBarItem.Identifier.todayItem:
+        let button = NSButton(title: "Today", target: self, action: #selector(goToToday(_:)))
+        custom.view = button
+
+      default:
+          return nil
+      }
+      return custom
   }
 }

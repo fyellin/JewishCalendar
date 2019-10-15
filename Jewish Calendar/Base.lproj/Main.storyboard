@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14490.12"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -127,27 +125,10 @@
                         <outlet property="fontMenu" destination="nUP-PP-jPC" id="2HU-nJ-0nv"/>
                     </connections>
                 </customObject>
-                <touchBar principalItem="D90-hc-RMQ" id="6o9-7C-hfi">
-                    <touchBarItems>
-                        <touchBarItem identifier="Hello" customizationLabel="Hello" id="D90-hc-RMQ">
-                            <viewController key="viewController" id="SgZ-nq-1dd">
-                                <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XAy-JJ-Bhj">
-                                    <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="push" title="TipToe" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cCA-wu-cVq">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" usesAppearanceFont="YES"/>
-                                    </buttonCell>
-                                </button>
-                            </viewController>
-                            <size key="designTimeSize" width="72" height="30"/>
-                        </touchBarItem>
-                    </touchBarItems>
-                </touchBar>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-99" y="-691"/>
+            <point key="canvasLocation" x="-197" y="-855"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -171,7 +152,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-81" y="-380"/>
+            <point key="canvasLocation" x="-147" y="-474"/>
         </scene>
         <!--Jewish Calendar View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -205,10 +186,10 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-0R-ro5" userLabel="Middle">
-                                <rect key="frame" x="203" y="478" width="342" height="22"/>
+                                <rect key="frame" x="203" y="479" width="342" height="21"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" tag="-12" translatesAutoresizingMaskIntoConstraints="NO" id="38l-Hb-FWR">
-                                        <rect key="frame" x="-6" y="-6" width="63" height="32"/>
+                                        <rect key="frame" x="-6" y="-7" width="63" height="32"/>
                                         <buttonCell key="cell" type="push" title="◀◀" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iuc-r0-PXT">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -220,7 +201,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="702-yE-S77">
-                                        <rect key="frame" x="47" y="-6" width="52" height="32"/>
+                                        <rect key="frame" x="47" y="-7" width="52" height="32"/>
                                         <buttonCell key="cell" type="push" title="◀" bezelStyle="rounded" alignment="center" borderStyle="border" tag="-1" inset="2" id="2ZJ-07-Acw">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -232,7 +213,7 @@
                                         </connections>
                                     </button>
                                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Pk-5j-xOd">
-                                        <rect key="frame" x="93" y="-2" width="105" height="25"/>
+                                        <rect key="frame" x="93" y="-3" width="105" height="25"/>
                                         <popUpButtonCell key="cell" type="push" title="September" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="ZPk-HU-7Hv" id="Omt-KH-4p3">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
@@ -251,7 +232,7 @@
                                         </connections>
                                     </popUpButton>
                                     <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="50" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxJ-L5-8i4" userLabel="Year Editor">
-                                        <rect key="frame" x="197" y="0.0" width="50" height="22"/>
+                                        <rect key="frame" x="197" y="0.0" width="50" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="dEa-Vc-RSa"/>
                                         </constraints>
@@ -269,7 +250,7 @@
                                         </connections>
                                     </textField>
                                     <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="udF-Ps-haf">
-                                        <rect key="frame" x="243" y="-6" width="52" height="32"/>
+                                        <rect key="frame" x="243" y="-7" width="52" height="32"/>
                                         <buttonCell key="cell" type="push" title="►" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wsm-uZ-iEX">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -281,7 +262,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="rgJ-CD-IuN">
-                                        <rect key="frame" x="285" y="-6" width="63" height="32"/>
+                                        <rect key="frame" x="285" y="-7" width="63" height="32"/>
                                         <buttonCell key="cell" type="push" title="►►" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ndX-hS-QxC">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -360,98 +341,20 @@
                             <constraint firstItem="XNP-bX-00W" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="vp4-gA-Rh4"/>
                         </constraints>
                     </view>
-                    <touchBar key="touchBar" id="Hk9-vn-aXF">
-                        <touchBarItems>
-                            <touchBarItem id="j95-gw-k6Q" userLabel="Previous Year">
-                                <viewController key="viewController" id="onM-Ko-MxX">
-                                    <button key="view" verticalHuggingPriority="750" tag="-12" translatesAutoresizingMaskIntoConstraints="NO" id="vlI-4v-J0g">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="LNr-1o-gPr"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSTouchBarRewindTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rSx-Jd-7na">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="changeMonthByDelta:" target="XfG-lQ-9wD" id="rG2-Qd-0V0"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="60" height="19"/>
-                            </touchBarItem>
-                            <touchBarItem id="lEr-VV-nqo" userLabel="Previous Month">
-                                <viewController key="viewController" id="iPf-C4-hSm">
-                                    <button key="view" verticalHuggingPriority="750" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qdV-uy-0lL">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="WEL-UE-kOw"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoBackTemplate" imagePosition="only" alignment="center" borderStyle="border" tag="3" imageScaling="proportionallyDown" inset="2" id="uoj-dc-UQ7">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="changeMonthByDelta:" target="XfG-lQ-9wD" id="SQS-sw-jkl"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="60" height="19"/>
-                            </touchBarItem>
-                            <touchBarItem id="Vzh-MX-WYb" userLabel="Next Month">
-                                <viewController key="viewController" id="Z5A-vz-NcS">
-                                    <button key="view" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="kxE-Yf-rCN">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoForwardTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Drr-8P-WuE">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="changeMonthByDelta:" target="XfG-lQ-9wD" id="iRi-qe-J4T"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="72" height="30"/>
-                            </touchBarItem>
-                            <touchBarItem id="Uap-1e-onD" userLabel="Next Year">
-                                <viewController key="viewController" id="lXm-j0-zVl">
-                                    <button key="view" verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="R8Z-XZ-wZ1">
-                                        <rect key="frame" x="0.0" y="-11" width="72" height="41"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="veg-eC-zWP"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSTouchBarFastForwardTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uen-OF-VGm">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="changeMonthByDelta:" target="XfG-lQ-9wD" id="g2e-ZN-BTL"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="60" height="30"/>
-                            </touchBarItem>
-                        </touchBarItems>
-                    </touchBar>
                     <connections>
                         <outlet property="calendarView" destination="xgy-eD-Zay" id="R6I-Tl-h8v"/>
                         <outlet property="monthPicker" destination="5Pk-5j-xOd" id="Ka3-F3-Sx7"/>
                         <outlet property="nextMonthButton" destination="udF-Ps-haf" id="ROH-Ib-z6C"/>
-                        <outlet property="nextMonthTouchBar" destination="Vzh-MX-WYb" id="7hM-37-xVt"/>
                         <outlet property="nextYearButton" destination="rgJ-CD-IuN" id="5xY-gF-0eK"/>
-                        <outlet property="nextYearTouchBar" destination="Uap-1e-onD" id="ARm-K0-peW"/>
                         <outlet property="previousMonthButton" destination="702-yE-S77" id="qbd-3k-yw0"/>
-                        <outlet property="previousMonthTouchBar" destination="lEr-VV-nqo" id="uAr-ZB-ARA"/>
                         <outlet property="previousYearButton" destination="38l-Hb-FWR" id="fVH-o5-zCd"/>
-                        <outlet property="previousYearTouchBar" destination="j95-gw-k6Q" id="RZI-kW-6Zt"/>
                         <outlet property="yearEditor" destination="RxJ-L5-8i4" id="hIU-Cv-oGc"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="rRM-MH-DPV"/>
             </objects>
-            <point key="canvasLocation" x="-119.5" y="156"/>
+            <point key="canvasLocation" x="-156" y="240"/>
         </scene>
         <!--Preference View Controller-->
         <scene sceneID="o67-xL-Hed">
@@ -462,13 +365,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="horizontal" alignment="firstBaseline" spacing="34" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnT-ho-NW8">
-                                <rect key="frame" x="85" y="33" width="357" height="83"/>
+                                <rect key="frame" x="85" y="34" width="357" height="82"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dXr-Gu-Me4" userLabel="ShowStack">
-                                        <rect key="frame" x="0.0" y="0.0" width="137" height="83"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="137" height="82"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mrX-1U-D8p">
-                                                <rect key="frame" x="-2" y="66" width="83" height="17"/>
+                                                <rect key="frame" x="-2" y="66" width="83" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Information" id="yai-cS-YON">
                                                     <font key="font" metaFont="systemBlack" size="13"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -520,10 +423,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AXh-bM-kcs" userLabel="WhereStack">
-                                        <rect key="frame" x="171" y="18" width="73" height="65"/>
+                                        <rect key="frame" x="171" y="18" width="73" height="64"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fiD-30-yl8">
-                                                <rect key="frame" x="-2" y="48" width="62" height="17"/>
+                                                <rect key="frame" x="-2" y="48" width="62" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Location" id="b7s-2t-bR7">
                                                     <font key="font" metaFont="systemBlack" size="13"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -563,10 +466,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ubb-eW-5K1" userLabel="CalendarStack">
-                                        <rect key="frame" x="278" y="22" width="79" height="61"/>
+                                        <rect key="frame" x="278" y="22" width="79" height="60"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jg5-Ml-UvX">
-                                                <rect key="frame" x="-2" y="44" width="65" height="17"/>
+                                                <rect key="frame" x="-2" y="44" width="65" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Calendar" id="ynP-mN-2gz">
                                                     <font key="font" metaFont="systemBlack" size="13"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -636,7 +539,7 @@
                 <customObject id="ddY-oQ-RQh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController id="fDD-5N-2D7"/>
             </objects>
-            <point key="canvasLocation" x="630" y="-9"/>
+            <point key="canvasLocation" x="723" y="399"/>
         </scene>
         <!--Keyboard Shortcut View Controller-->
         <scene sceneID="zjK-Fk-NYw">
@@ -755,7 +658,7 @@
                                 </tableHeaderView>
                             </scrollView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X4d-hV-ymi">
-                                <rect key="frame" x="129" y="222" width="192" height="24"/>
+                                <rect key="frame" x="129" y="223" width="192" height="23"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Keyboard Shortcuts" id="OLX-Ar-k3m">
                                     <font key="font" metaFont="systemBold" size="20"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -779,16 +682,12 @@
                     </connections>
                 </arrayController>
             </objects>
-            <point key="canvasLocation" x="585" y="321"/>
+            <point key="canvasLocation" x="685" y="143"/>
         </scene>
     </scenes>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSGoBackTemplate" width="9" height="12"/>
-        <image name="NSGoForwardTemplate" width="9" height="12"/>
         <image name="NSInfo" width="32" height="32"/>
         <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
-        <image name="NSTouchBarFastForwardTemplate" width="22" height="30"/>
-        <image name="NSTouchBarRewindTemplate" width="22" height="30"/>
     </resources>
 </document>
