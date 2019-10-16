@@ -403,7 +403,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3120.0;
+				CURRENT_PROJECT_VERSION = 3120.2;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -427,7 +427,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3120.0;
+				CURRENT_PROJECT_VERSION = 3120.2;
 				DEVELOPMENT_TEAM = 29HA8F33VP;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
