@@ -16,6 +16,7 @@
 		063E802B23048F7D001EFA2C /* JewishCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802A23048F7D001EFA2C /* JewishCalendarApp.swift */; };
 		0690B8D23010199000B9022F /* CompactMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690B8D13010199000B9022F /* CompactMonthView.swift */; };
 		0690B8D4301019D900B9022F /* MonthCardSwipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690B8D3301019D900B9022F /* MonthCardSwipe.swift */; };
+		0690B8D63010272300B9022F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0690B8D53010272300B9022F /* PrivacyInfo.xcprivacy */; };
 		069973E82315D09E00EF568B /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069973E72315D09E00EF568B /* DateTests.swift */; };
 		069973EC231657D000EF568B /* Golden.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 069973EB231657D000EF568B /* Golden.xcassets */; };
 		069973EE2316585900EF568B /* golden31.txt in Resources */ = {isa = PBXBuildFile; fileRef = 069973ED2316585900EF568B /* golden31.txt */; };
@@ -49,6 +50,7 @@
 		063E802A23048F7D001EFA2C /* JewishCalendarApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JewishCalendarApp.swift; sourceTree = "<group>"; };
 		0690B8D13010199000B9022F /* CompactMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactMonthView.swift; sourceTree = "<group>"; };
 		0690B8D3301019D900B9022F /* MonthCardSwipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCardSwipe.swift; sourceTree = "<group>"; };
+		0690B8D53010272300B9022F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		069973DD2315D04E00EF568B /* Jewish Calendar Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Jewish Calendar Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		069973E12315D04E00EF568B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		069973E72315D09E00EF568B /* DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				063E801123048E2C001EFA2C /* Assets.xcassets */,
 				0690B8D13010199000B9022F /* CompactMonthView.swift */,
 				0690B8D3301019D900B9022F /* MonthCardSwipe.swift */,
+				0690B8D53010272300B9022F /* PrivacyInfo.xcprivacy */,
 			);
 			path = "Jewish Calendar";
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0690B8D63010272300B9022F /* PrivacyInfo.xcprivacy in Resources */,
 				063E801223048E2C001EFA2C /* Assets.xcassets in Resources */,
 				06DD126C230DD0220070679D /* Credits.html in Resources */,
 			);
@@ -401,13 +405,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3120.2;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 29HA8F33VP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -417,6 +431,12 @@
 				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -429,13 +449,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Jewish Calendar/Jewish Calendar.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3120.2;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 29HA8F33VP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -445,6 +475,12 @@
 				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;

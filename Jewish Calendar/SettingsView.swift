@@ -12,6 +12,10 @@ struct SettingsView: View {
     @AppStorage("omer") private var showOmer = true
     @AppStorage("chol") private var showCholHamoed = true
 
+    /// Once the user has read the Julian warning and clicked OK, never show it
+    /// again.  (Cancelling leaves it armed for the next attempt.)
+    @AppStorage("julianWarningAcknowledged") private var julianWarningAcknowledged = false
+
     @State private var confirmingJulian = false
 
     var body: some View {
@@ -34,7 +38,7 @@ struct SettingsView: View {
             }
             .pickerStyle(.inline)
             .onChange(of: useJulian) { _, newValue in
-                if newValue {
+                if newValue, !julianWarningAcknowledged {
                     confirmingJulian = true
                 }
             }
@@ -47,7 +51,9 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {
                 useJulian = false
             }
-            Button("OK") {}
+            Button("OK") {
+                julianWarningAcknowledged = true
+            }
         } message: {
             Text(julianWarning)
         }
