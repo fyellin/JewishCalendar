@@ -28,5 +28,7 @@
 	<string>Copyright © 2019 Frank Yellin and Avi Drissman. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UILaunchScreen</key>
+	<dict/>
 </dict>
 </plist>

@@ -15,7 +15,7 @@ struct MonthGridView: View {
         let cells = self.cells
         let today = month.today
         VStack(spacing: 6) {
-            Text(banner)
+            Text(month.hebrewDateRange)
                 .font(.system(size: fontSize * 1.4, weight: .bold))
 
             HStack(spacing: 0) {
@@ -52,22 +52,6 @@ struct MonthGridView: View {
         return cells
     }
 
-    /// The range of Hebrew dates covered by this secular month, such as
-    /// "6 Tamuz — 7 Ab 5786".
-    private var banner: String {
-        let firstDay = month.days.first!
-        let lastDay = month.days.last!
-        let startBanner: String
-        if firstDay.hebrewDate.month == lastDay.hebrewDate.month {
-            startBanner = "\(firstDay.hebrewDate.day)"
-        } else if firstDay.hebrewDate.year == lastDay.hebrewDate.year {
-            startBanner = "\(firstDay.hebrewDate.day) \(firstDay.hebrewMonthName)"
-        } else {
-            startBanner = "\(firstDay.hebrewDate.day) \(firstDay.hebrewMonthName) \(firstDay.hebrewDate.year)"
-        }
-        let endBanner = "\(lastDay.hebrewDate.day) \(lastDay.hebrewMonthName) \(lastDay.hebrewDate.year)"
-        return "\(startBanner) — \(endBanner)"
-    }
 }
 
 /// A single day of the calendar: the secular day number, the Hebrew date, and

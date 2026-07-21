@@ -42,4 +42,21 @@ struct CalendarMonth {
     var today: SecularDate {
         calendar.today()
     }
+
+    /// The range of Hebrew dates covered by this secular month, such as
+    /// "16 Tamuz — 17 Ab 5786".
+    var hebrewDateRange: String {
+        let firstDay = days.first!
+        let lastDay = days.last!
+        let start: String
+        if firstDay.hebrewDate.month == lastDay.hebrewDate.month {
+            start = "\(firstDay.hebrewDate.day)"
+        } else if firstDay.hebrewDate.year == lastDay.hebrewDate.year {
+            start = "\(firstDay.hebrewDate.day) \(firstDay.hebrewMonthName)"
+        } else {
+            start = "\(firstDay.hebrewDate.day) \(firstDay.hebrewMonthName) \(firstDay.hebrewDate.year)"
+        }
+        let end = "\(lastDay.hebrewDate.day) \(lastDay.hebrewMonthName) \(lastDay.hebrewDate.year)"
+        return "\(start) — \(end)"
+    }
 }

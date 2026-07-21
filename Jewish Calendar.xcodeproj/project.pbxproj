@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		063E802623048EA0001EFA2C /* Parsha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802123048EA0001EFA2C /* Parsha.swift */; };
 		063E802723048EA0001EFA2C /* MonthGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802223048EA0001EFA2C /* MonthGridView.swift */; };
 		063E802B23048F7D001EFA2C /* JewishCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063E802A23048F7D001EFA2C /* JewishCalendarApp.swift */; };
+		0690B8D23010199000B9022F /* CompactMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690B8D13010199000B9022F /* CompactMonthView.swift */; };
+		0690B8D4301019D900B9022F /* MonthCardSwipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690B8D3301019D900B9022F /* MonthCardSwipe.swift */; };
 		069973E82315D09E00EF568B /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069973E72315D09E00EF568B /* DateTests.swift */; };
 		069973EC231657D000EF568B /* Golden.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 069973EB231657D000EF568B /* Golden.xcassets */; };
 		069973EE2316585900EF568B /* golden31.txt in Resources */ = {isa = PBXBuildFile; fileRef = 069973ED2316585900EF568B /* golden31.txt */; };
@@ -45,6 +47,8 @@
 		063E802123048EA0001EFA2C /* Parsha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsha.swift; sourceTree = "<group>"; };
 		063E802223048EA0001EFA2C /* MonthGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthGridView.swift; sourceTree = "<group>"; };
 		063E802A23048F7D001EFA2C /* JewishCalendarApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JewishCalendarApp.swift; sourceTree = "<group>"; };
+		0690B8D13010199000B9022F /* CompactMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactMonthView.swift; sourceTree = "<group>"; };
+		0690B8D3301019D900B9022F /* MonthCardSwipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCardSwipe.swift; sourceTree = "<group>"; };
 		069973DD2315D04E00EF568B /* Jewish Calendar Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Jewish Calendar Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		069973E12315D04E00EF568B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		069973E72315D09E00EF568B /* DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 				06A32F2D23068C16000714F8 /* SettingsView.swift */,
 				06DD1265230D0EC90070679D /* CalendarViewModel.swift */,
 				063E801123048E2C001EFA2C /* Assets.xcassets */,
+				0690B8D13010199000B9022F /* CompactMonthView.swift */,
+				0690B8D3301019D900B9022F /* MonthCardSwipe.swift */,
 			);
 			path = "Jewish Calendar";
 			sourceTree = "<group>";
@@ -169,8 +175,9 @@
 		063E800223048E2B001EFA2C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1030;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 2660;
 				ORGANIZATIONNAME = "Frank Yellin";
 				TargetAttributes = {
 					063E800923048E2B001EFA2C = {
@@ -236,7 +243,9 @@
 				063E802B23048F7D001EFA2C /* JewishCalendarApp.swift in Sources */,
 				063E802723048EA0001EFA2C /* MonthGridView.swift in Sources */,
 				063E802523048EA0001EFA2C /* CalendarScreen.swift in Sources */,
+				0690B8D4301019D900B9022F /* MonthCardSwipe.swift in Sources */,
 				06DD1266230D0EC90070679D /* CalendarViewModel.swift in Sources */,
+				0690B8D23010199000B9022F /* CompactMonthView.swift in Sources */,
 				063E802423048EA0001EFA2C /* Holidays.swift in Sources */,
 				063E802623048EA0001EFA2C /* Parsha.swift in Sources */,
 				06A32F2E23068C16000714F8 /* SettingsView.swift in Sources */,
@@ -291,6 +300,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -299,9 +309,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -321,6 +333,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -352,6 +365,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -360,9 +374,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -375,6 +391,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -389,6 +406,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3120.2;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -399,8 +417,11 @@
 				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -413,6 +434,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3120.2;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Jewish Calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -423,7 +445,10 @@
 				MARKETING_VERSION = 3.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jewcal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -435,6 +460,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Jewish Calendar Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -458,6 +484,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Jewish Calendar Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -40,7 +40,9 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 380)
+        #if os(macOS)
+            .frame(width: 380)
+        #endif
         .alert("Are you sure?", isPresented: $confirmingJulian) {
             Button("Cancel", role: .cancel) {
                 useJulian = false
