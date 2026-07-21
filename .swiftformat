@@ -15,7 +15,7 @@
 --hexliteralcase uppercase
 --ifdef indent
 --importgrouping alphabetized
---indent 2
+--indent 4
 --indentcase false
 --linebreaks lf
 --octalgrouping none

@@ -3,49 +3,40 @@
 
 import Foundation
 
-/// This class encapsulates all the data that is needed by the CalendarView to generate the
-/// information that is viewed on the screen
+/// Everything the CalendarView needs in order to display one secular month.
+/// The user's preferences are captured at creation time.
+struct CalendarMonth {
+    /// The secular year being displayed
+    let year: Int
 
-class CalendarViewDataModel {
-  let inIsrael = Preference.inIsrael.get()
-  let showParsha = Preference.showParsha.get()
-  let showChol = Preference.showCholHamoed.get()
-  let showOmer = Preference.showOmer.get()
-  let calendar = SecularCalendar.forUsingJulian(Preference.useJulian.get())
+    /// The secular month being displayed
+    let month: Int
 
-  /// The yerar being displayed
-  let currentYear: Int
+    let calendar: SecularCalendar
+    let options: HolidayOptions
 
-  /// The month being displayed
-  let currentMonth: Int
+    /// One entry for each day of the month.
+    let days: [CalendarDay]
 
-  /// A lazily calculated of DateResult values for the entire secular month
-  lazy var dateResultMonthArray: [DateResult] = {
-    var result = DateResult(fromSecularYear: currentYear, month: currentMonth, day: 1, calendar: calendar)
-    return (1...result.secularMonthLength).map { currentDay in
-      if currentDay > 1 {
-        result = result.next()
-      }
-      assert((currentYear, currentMonth, currentDay) ==
-        (result.secularYear, result.secularMonth, result.secularDay))
-      return result
+    init(year: Int, month: Int) {
+        let calendar = Preferences.secularCalendar
+        self.year = year
+        self.month = month
+        self.calendar = calendar
+        self.options = Preferences.holidayOptions
+
+        let firstDay = calendar.absoluteDay(of: SecularDate(year: year, month: month, day: 1))
+        let length = calendar.lengthOfMonth(month, ofYear: year)
+        self.days = (firstDay..<(firstDay + length)).map { CalendarDay($0, calendar: calendar) }
     }
-  }()
 
-  init(year: Int, month: Int) {
-    self.currentYear = year
-    self.currentMonth = month
-  }
+    /// The holidays for the given day, using the options with which we were created.
+    func holidays(on day: CalendarDay) -> [String] {
+        day.holidays(options)
+    }
 
-  /// Get the holidays for the specified date, using the flags with which we were created
-  func getHolidaysFor(dateResult: DateResult) -> [String] {
-    return FindHolidays(
-      fromDateResult: dateResult,
-      inIsrael: inIsrael, showParsha: showParsha, showOmer: showOmer, showChol: showChol)
-  }
-
-  /// Get today, given the current claendar
-  func getToday() -> YearMonthDay {
-    return todaysYearMonthDay(calendar)
-  }
+    /// Today's date, in the calendar being displayed.
+    var today: SecularDate {
+        calendar.today()
+    }
 }

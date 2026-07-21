@@ -2,203 +2,154 @@
 // Copyright (c) 2019 Frank Yellin
 // Created on 8/31/19.
 
-import XCTest
+import Foundation
+import Testing
 
 @testable import Jewish_Calendar
 
-class DateTests: XCTestCase {
-  override func setUp() {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
+/// Used to locate the test bundle, which holds the golden file.
+private final class BundleLocator {}
 
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-  }
+/// One Hebrew year of each of the fourteen year types, identified by the
+/// weekday of Rosh Hashanah, the year length, and whether it is a leap year.
+///
+///     5780 Monday   long   normal      5789 Thursday normal normal
+///     5781 Saturday short  normal      5790 Monday   short  leap
+///     5782 Tuesday  normal leap        5795 Thursday long   leap
+///     5784 Saturday short  leap        5797 Monday   short  normal
+///     5785 Thursday long   normal      5803 Monday   long   leap
+///     5786 Tuesday  normal normal      5812 Thursday short  leap
+///     5787 Saturday long   leap
+///     5788 Saturday long   normal
+private let testYears = [5780, 5781, 5782, 5784, 5785, 5786, 5787, 5788, 5789, 5790, 5795, 5797, 5803, 5812]
 
-  /*****
-   5780 120 Monday long false
-   5781 600 Saturday short false
-   5782 211 Tuesday normal true
-   5784 601 Saturday short true
-   5785 420 Thursday long false
-   5786 210 Tuesday normal false
-   5787 621 Saturday long true
-   5788 620 Saturday long false
-   5789 410 Thursday normal false
-   5790 101 Monday short true
-   5795 421 Thursday long true
-   5797 100 Monday short false
-   5803 121 Monday long true
-   5812 401 Thursday short true
-   ******/
+struct DateTests {
+    @Test(arguments: testYears)
+    func basicCalendarOperation(year: Int) {
+        let hebrewYear = HebrewYear(year)
 
-  let years = [5780, 5781, 5782, 5784, 5785, 5786, 5787, 5788, 5789, 5790, 5795, 5797, 5803, 5812]
-  let hc = HebrewCalendar.shared
+        // Rosh Hashanah is 1 Tishrei, and never falls on Sunday, Wednesday, or Friday.
+        #expect(hebrewYear.firstDay
+            == hebrewYear.absoluteDay(of: HebrewDate(year: year, month: .tishrei, day: 1)))
+        let weekday = hebrewYear.firstDay.weekday
+        #expect(weekday != .sunday)
+        #expect(weekday != .wednesday)
+        #expect(weekday != .friday)
 
-  func testExample() {
-    let fileName = "Testing3.1"
-    var fh = FileHandle(forWritingAtPath: fileName)
-    if fh == nil {
-      FileManager.default.createFile(atPath: fileName, contents: nil, attributes: nil)
-      fh = FileHandle(forWritingAtPath: fileName)!
-    }
-    defer {
-      fh?.closeFile()
-    }
-    let calendar = SecularCalendar.gregorian
-    let hebrewCalendar = HebrewCalendar.shared
-    for year in years {
-      let yearStart = hebrewCalendar.firstOfYear(year)
-      let yearEnd = hebrewCalendar.firstOfYear(year + 1)
-      for absolute in yearStart..<yearEnd {
-        let dr = DateResult(fromAbsolute: absolute, calendar: calendar)
-        assert(dr.absolute == absolute)
-        assert(dr.hebrewYear == year)
-        assert(absolute == hebrewCalendar.toAbsolute(year, dr.hebrewMonth, dr.hebrewDay))
-        assert(absolute == calendar.toAbsolute(dr.secularYear, dr.secularMonth, dr.secularDay))
-        assert(dr.hebrewDayNumber == absolute - yearStart + 1)
-        let a = FindHolidays(
-          fromDateResult: dr,
-          inIsrael: false, showParsha: true, showOmer: true, showChol: true)
-        let b = FindHolidays(
-          fromDateResult: dr,
-          inIsrael: true, showParsha: true, showOmer: true, showChol: true)
-        var output = """
-        \(absolute) \(dr.hebrewDayNumber) \(dr.hebrewYear) \(dr.hebrewMonth) \(dr.hebrewDay) \
-        \(dr.secularYear) \(dr.secularMonth) \(dr.secularDay) \(dr.secularMonthLength) \(dr.secularMonthLength) \(a)
-        """
-        if a != b {
-          output = "\(output) \(b)\n"
-        } else {
-          output = output + "\n"
+        // Cheshvan and Kislev are the months whose lengths vary with the year type.
+        switch hebrewYear.length % 10 {
+            case 3:
+                #expect(hebrewYear.length(of: .cheshvan) == 29)
+                #expect(hebrewYear.length(of: .kislev) == 29)
+            case 4:
+                #expect(hebrewYear.length(of: .cheshvan) == 29)
+                #expect(hebrewYear.length(of: .kislev) == 30)
+            case 5:
+                #expect(hebrewYear.length(of: .cheshvan) == 30)
+                #expect(hebrewYear.length(of: .kislev) == 30)
+            default:
+                Issue.record("Unexpected year length \(hebrewYear.length)")
         }
-        fh!.write(Data(output.utf8))
-      }
-    }
-  }
 
-  func testBasicCalendarOperation() {
-    for year in years {
-      let roshHashanah1 = hc.firstOfYear(year)
-      let roshHashanah2 = hc.toAbsolute(year, 7, 1)
-      XCTAssertEqual(roshHashanah1, roshHashanah2)
-      let dayOfWeek = DayOfWeek(from_absolute: roshHashanah1)
-      XCTAssertNotEqual(dayOfWeek, DayOfWeek.Sunday)
-      XCTAssertNotEqual(dayOfWeek, DayOfWeek.Wednesday)
-      XCTAssertNotEqual(dayOfWeek, DayOfWeek.Friday)
-
-      let yearLength = hc.firstOfYear(year + 1) - hc.firstOfYear(year)
-
-      switch yearLength % 10 {
-      case 3:
-        XCTAssertEqual(hc.toAbsolute(year, 9, 1), hc.toAbsolute(year, 8, 29) + 1)
-        XCTAssertEqual(hc.toAbsolute(year, 10, 1), hc.toAbsolute(year, 9, 29) + 1)
-      case 4:
-        XCTAssertEqual(hc.toAbsolute(year, 9, 1), hc.toAbsolute(year, 8, 29) + 1)
-        XCTAssertEqual(hc.toAbsolute(year, 10, 1), hc.toAbsolute(year, 9, 30) + 1)
-      case 5:
-        XCTAssertEqual(hc.toAbsolute(year, 9, 1), hc.toAbsolute(year, 8, 30) + 1)
-        XCTAssertEqual(hc.toAbsolute(year, 10, 1), hc.toAbsolute(year, 9, 30) + 1)
-      default:
-        XCTAssert(false, "Should not be here")
-      }
-      XCTAssert(hc.fromAbsolute(hc.toAbsolute(year, 9, 1)) == (year: year, month: 9, day: 1))
-      XCTAssert(hc.fromAbsolute(hc.toAbsolute(year, 10, 1)) == (year: year, month: 10, day: 1))
-
-      XCTAssertEqual(hc.toAbsolute(year + 1, 7, 1), hc.toAbsolute(year, 6, 29) + 1)
-      if yearLength < 360 {
-        XCTAssertEqual(hc.toAbsolute(year, 1, 1), hc.toAbsolute(year, 12, 29) + 1)
-      } else {
-        XCTAssertEqual(hc.toAbsolute(year, 13, 1), hc.toAbsolute(year, 12, 30) + 1)
-        XCTAssertEqual(hc.toAbsolute(year, 1, 1), hc.toAbsolute(year, 13, 29) + 1)
-      }
-    }
-  }
-
-  func testIndependenceDay() {
-    for year in 1940...2010 {
-      let iyar2 = hc.toAbsolute(year + 3760, 2, 2)
-      let holidays = (iyar2...iyar2 + 4).map { getHolidays(fromAbsolute: $0) }
-      let zikaron = holidays.map { $0.contains("Yom HaZikaron") }
-      let atzmaut = holidays.map { $0.contains("Yom HaAtzmaut") }
-      if year < 1948 {
-        XCTAssertFalse(zikaron.contains(true))
-        XCTAssertFalse(atzmaut.contains(true))
-      } else {
-        let zikaronDate = zikaron.firstIndex(of: true)
-        let atzmautDate = atzmaut.firstIndex(of: true)
-        XCTAssertNotNil(zikaronDate)
-        XCTAssertNotNil(atzmautDate)
-        XCTAssertEqual(zikaronDate, zikaron.lastIndex(of: true))
-        XCTAssertEqual(atzmautDate, atzmaut.lastIndex(of: true))
-        XCTAssertEqual(zikaronDate! + 1, atzmautDate)
-        let dayOfWeekOfFifth = DayOfWeek(from_absolute: hc.toAbsolute(year + 3760, 2, 5))
-        let nthOfIyar = atzmautDate! + 2
-        switch dayOfWeekOfFifth {
-        case .Monday where year < 2004, .Wednesday:
-          XCTAssertEqual(nthOfIyar, 5)
-        case .Monday where year >= 2004:
-          XCTAssertEqual(nthOfIyar, 6)
-        case .Friday:
-          XCTAssertEqual(nthOfIyar, 4)
-        case .Saturday:
-          XCTAssertEqual(nthOfIyar, 3)
-        default:
-          XCTAssertTrue(false, "Should not reach here")
+        // The months tile the year exactly: each month starts the day after the
+        // previous one ends, and the year ends the day before the next Rosh Hashanah.
+        let months = hebrewYear.months
+        #expect(months.count == (hebrewYear.isLeap ? 13 : 12))
+        #expect(months.map { hebrewYear.length(of: $0) }.reduce(0, +) == hebrewYear.length)
+        for (previous, next) in zip(months, months.dropFirst()) {
+            let lastOfPrevious = hebrewYear.absoluteDay(
+                of: HebrewDate(year: year, month: previous, day: hebrewYear.length(of: previous)))
+            let firstOfNext = hebrewYear.absoluteDay(of: HebrewDate(year: year, month: next, day: 1))
+            #expect(firstOfNext == lastOfPrevious + 1)
         }
-      }
-    }
-  }
+        let lastDay = hebrewYear.absoluteDay(of: HebrewDate(year: year, month: .elul, day: 29))
+        #expect(HebrewYear(year + 1).firstDay == lastDay + 1)
 
-  func xtestPerformanceExample() {
-    // This is an example of a performance test case.
-    measure {
-      // Put the code you want to measure the time of here.
-    }
-  }
-
-  func getHolidays(fromAbsolute absolute: Int) -> [String] {
-    let dr = DateResult(fromAbsolute: absolute, calendar: SecularCalendar.gregorian)
-    return FindHolidays(
-      fromDateResult: dr, inIsrael: false, showParsha: true, showOmer: true, showChol: true)
-  }
-
-  func testBundle() {
-    let bundle = Bundle(for: classForCoder)
-    let resourceURL = bundle.url(forResource: "golden31", withExtension: "txt")!
-    let contents = try! String(contentsOf: resourceURL)
-    var lines = contents.split { $0.isNewline }
-
-    let calendar = SecularCalendar.gregorian
-    let hebrewCalendar = HebrewCalendar.shared
-    for year in years {
-      let yearStart = hebrewCalendar.firstOfYear(year)
-      let yearEnd = hebrewCalendar.firstOfYear(year + 1)
-      for absolute in yearStart..<yearEnd {
-        let dr = DateResult(fromAbsolute: absolute, calendar: calendar)
-        assert(dr.absolute == absolute)
-        assert(dr.hebrewYear == year)
-        assert(absolute == hebrewCalendar.toAbsolute(year, dr.hebrewMonth, dr.hebrewDay))
-        assert(absolute == calendar.toAbsolute(dr.secularYear, dr.secularMonth, dr.secularDay))
-        assert(dr.hebrewDayNumber == absolute - yearStart + 1)
-        let a = FindHolidays(
-          fromDateResult: dr,
-          inIsrael: false, showParsha: true, showOmer: true, showChol: true)
-        let b = FindHolidays(
-          fromDateResult: dr,
-          inIsrael: true, showParsha: true, showOmer: true, showChol: true)
-        var output = """
-        \(absolute) \(dr.hebrewDayNumber) \(dr.hebrewYear) \(dr.hebrewMonth) \(dr.hebrewDay) \
-        \(dr.secularYear) \(dr.secularMonth) \(dr.secularDay) \(dr.secularMonthLength) \
-        \(dr.secularMonthLength) \(a)
-        """
-        if a != b {
-          output = "\(output) \(b)"
+        // Converting a day to a Hebrew date and back is the identity.
+        for day in hebrewYear.firstDay..<(hebrewYear.firstDay + hebrewYear.length) {
+            #expect(hebrewYear.contains(day))
+            let date = hebrewYear.date(of: day)
+            #expect(date.year == year)
+            #expect(hebrewYear.absoluteDay(of: date) == day)
+            #expect(HebrewYear(containing: day) == hebrewYear)
         }
-        XCTAssertEqual(String(lines.first!), output)
-        lines.removeFirst()
-      }
     }
-    XCTAssertTrue(lines.isEmpty)
-  }
+
+    @Test
+    func independenceDay() throws {
+        for year in 1940...2010 {
+            let hebrewYear = HebrewYear(year + 3760)
+            let iyar2 = hebrewYear.absoluteDay(of: HebrewDate(year: year + 3760, month: .iyar, day: 2))
+            let holidays = (iyar2...iyar2 + 4).map {
+                CalendarDay($0, calendar: .gregorian).holidays(HolidayOptions())
+            }
+            let zikaron = holidays.map { $0.contains("Yom HaZikaron") }
+            let atzmaut = holidays.map { $0.contains("Yom HaAtzmaut") }
+            if year < 1948 {
+                #expect(!zikaron.contains(true))
+                #expect(!atzmaut.contains(true))
+            } else {
+                // Exactly one day of each, on consecutive days, on the day of Iyar
+                // required by the postponement rules.
+                let zikaronIndex = try #require(zikaron.firstIndex(of: true))
+                let atzmautIndex = try #require(atzmaut.firstIndex(of: true))
+                #expect(zikaronIndex == zikaron.lastIndex(of: true))
+                #expect(atzmautIndex == atzmaut.lastIndex(of: true))
+                #expect(zikaronIndex + 1 == atzmautIndex)
+                let weekdayOfTheFifth = (iyar2 + 3).weekday
+                let atzmautDayOfIyar = atzmautIndex + 2
+                switch weekdayOfTheFifth {
+                    case .monday where year < 2004, .wednesday:
+                        #expect(atzmautDayOfIyar == 5)
+                    case .monday:
+                        #expect(atzmautDayOfIyar == 6)
+                    case .friday:
+                        #expect(atzmautDayOfIyar == 4)
+                    case .saturday:
+                        #expect(atzmautDayOfIyar == 3)
+                    default:
+                        Issue.record("The fifth of Iyar should never fall on \(weekdayOfTheFifth)")
+                }
+            }
+        }
+    }
+
+    /// Compares every day of the fourteen test years against a golden file
+    /// generated by version 3.1 of this program.
+    @Test
+    func matchesGoldenFile() throws {
+        let bundle = Bundle(for: BundleLocator.self)
+        let resourceURL = try #require(bundle.url(forResource: "golden31", withExtension: "txt"))
+        let contents = try String(contentsOf: resourceURL, encoding: .utf8)
+        var expectedLines = contents.split(whereSeparator: \.isNewline)[...]
+
+        for year in testYears {
+            let hebrewYear = HebrewYear(year)
+            for absolute in hebrewYear.firstDay..<HebrewYear(year + 1).firstDay {
+                let day = CalendarDay(absolute, calendar: .gregorian)
+                #expect(day.hebrewDate.year == year)
+                #expect(hebrewYear.absoluteDay(of: day.hebrewDate) == absolute)
+                #expect(SecularCalendar.gregorian.absoluteDay(of: day.secularDate) == absolute)
+                #expect(day.dayOfHebrewYear == absolute - hebrewYear.firstDay + 1)
+
+                let diaspora = day.holidays(HolidayOptions(inIsrael: false))
+                let israel = day.holidays(HolidayOptions(inIsrael: true))
+                // The line format (including the doubled month length) matches the
+                // program that generated the golden file.
+                var line = """
+                \(absolute.dayNumber) \(day.dayOfHebrewYear) \(day.hebrewDate.year) \
+                \(day.hebrewDate.month.rawValue) \(day.hebrewDate.day) \
+                \(day.secularDate.year) \(day.secularDate.month) \(day.secularDate.day) \
+                \(day.secularMonthLength) \(day.secularMonthLength) \(diaspora)
+                """
+                if diaspora != israel {
+                    line += " \(israel)"
+                }
+                let expected = try #require(expectedLines.first, "Golden file ended too soon")
+                #expect(String(expected) == line)
+                expectedLines = expectedLines.dropFirst()
+            }
+        }
+        #expect(expectedLines.isEmpty, "Golden file has \(expectedLines.count) extra lines")
+    }
 }

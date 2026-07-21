@@ -5,45 +5,45 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-  @IBOutlet var fontMenu: NSMenuItem!
+    @IBOutlet var fontMenu: NSMenuItem!
 
-  var jewishCalendarController: JewishCalendarViewController?
+    var jewishCalendarController: JewishCalendarViewController?
 
-  let showFontMenu = true
-  let enableFontMenu = true
+    let showFontMenu = true
+    let enableFontMenu = true
 
-  func applicationDidFinishLaunching(_ aNotification: Notification) {
-    let controller = NSApplication.shared.mainWindow?.contentViewController
-    jewishCalendarController = controller as? JewishCalendarViewController
-    fontMenu.isEnabled = enableFontMenu
-    fontMenu.isHidden = !showFontMenu
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let controller = NSApplication.shared.mainWindow?.contentViewController
+        jewishCalendarController = controller as? JewishCalendarViewController
+        fontMenu.isEnabled = enableFontMenu
+        fontMenu.isHidden = !showFontMenu
 
-    let window = NSApplication.shared.mainWindow
-    window?.windowController?.shouldCascadeWindows = false
-    window?.setFrameUsingName("JewishCalendar")
-    window?.setFrameAutosaveName("JewishCalendar")
-    if #available(OSX 10.12.2, *) {
-      NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
+        let window = NSApplication.shared.mainWindow
+        window?.windowController?.shouldCascadeWindows = false
+        window?.setFrameUsingName("JewishCalendar")
+        window?.setFrameAutosaveName("JewishCalendar")
+        if #available(OSX 10.12.2, *) {
+            NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
+        }
+
     }
 
-  }
-
-  func applicationWillTerminate(_ aNotification: Notification) {
-    // Insert code here to tear down your application
-  }
-
-  func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-    return true
-  }
-
-  @IBAction func handlePrintMenu(_ sender: Any) {
-    if let view = jewishCalendarController?.view {
-      NSPrintOperation(view: view).run()
+    func applicationWillTerminate(_ aNotification: Notification) {
+        // Insert code here to tear down your application
     }
-  }
 
-  @IBAction func modifyFont(_ sender: NSMenuItem) {
-    // NSFontManager.shared.modifyFont(sender)
-    jewishCalendarController?.calendarView.modifyFont(sender)
-  }
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
+    @IBAction func handlePrintMenu(_ sender: Any) {
+        if let view = jewishCalendarController?.view {
+            NSPrintOperation(view: view).run()
+        }
+    }
+
+    @IBAction func modifyFont(_ sender: NSMenuItem) {
+        // NSFontManager.shared.modifyFont(sender)
+        jewishCalendarController?.calendarView.modifyFont(sender)
+    }
 }

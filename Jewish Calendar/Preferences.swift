@@ -3,44 +3,62 @@
 
 import Foundation
 
-/// This class serves as a bridge between the user's preferences and their representation
-/// in UserDefaults.standard
+/// The user's preferences, backed by UserDefaults.
+enum Preferences {
+    static var useJulian: Bool {
+        get { defaults.bool(forKey: Key.useJulian) }
+        set { defaults.set(newValue, forKey: Key.useJulian) }
+    }
 
-enum Preference: String {
-  case useJulian = "julian"
-  case inIsrael = "israel"
-  case showParsha = "parsha"
-  case showOmer = "omer"
-  case showCholHamoed = "chol"
+    static var inIsrael: Bool {
+        get { defaults.bool(forKey: Key.inIsrael) }
+        set { defaults.set(newValue, forKey: Key.inIsrael) }
+    }
 
-  static let userDefaults = getInitializedUserDefaults()
+    static var showParsha: Bool {
+        get { defaults.bool(forKey: Key.showParsha) }
+        set { defaults.set(newValue, forKey: Key.showParsha) }
+    }
 
-  static func reset() {
-    UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
-    UserDefaults.standard.synchronize()
-  }
+    static var showOmer: Bool {
+        get { defaults.bool(forKey: Key.showOmer) }
+        set { defaults.set(newValue, forKey: Key.showOmer) }
+    }
 
-  func get() -> Bool {
-    return Preference.userDefaults.bool(forKey: rawValue)
-  }
+    static var showCholHamoed: Bool {
+        get { defaults.bool(forKey: Key.showCholHamoed) }
+        set { defaults.set(newValue, forKey: Key.showCholHamoed) }
+    }
 
-  func set(value: Bool) {
-    Preference.userDefaults.set(value, forKey: rawValue)
-  }
+    /// The secular calendar the user has selected.
+    static var secularCalendar: SecularCalendar {
+        useJulian ? .julian : .gregorian
+    }
 
-  func flip() {
-    set(value: !get())
-  }
+    /// The holiday display options the user has selected.
+    static var holidayOptions: HolidayOptions {
+        HolidayOptions(
+            inIsrael: inIsrael, showParsha: showParsha,
+            showOmer: showOmer, showCholHamoed: showCholHamoed)
+    }
 
-  private static func getInitializedUserDefaults() -> UserDefaults {
-    let userDefaults = UserDefaults.standard
-    userDefaults.register(defaults: [
-      useJulian.rawValue: false,
-      inIsrael.rawValue: false,
-      showParsha.rawValue: true,
-      showOmer.rawValue: true,
-      showCholHamoed.rawValue: true
-    ])
-    return userDefaults
-  }
+    private enum Key {
+        static let useJulian = "julian"
+        static let inIsrael = "israel"
+        static let showParsha = "parsha"
+        static let showOmer = "omer"
+        static let showCholHamoed = "chol"
+    }
+
+    private static let defaults: UserDefaults = {
+        let defaults = UserDefaults.standard
+        defaults.register(defaults: [
+            Key.useJulian: false,
+            Key.inIsrael: false,
+            Key.showParsha: true,
+            Key.showOmer: true,
+            Key.showCholHamoed: true
+        ])
+        return defaults
+    }()
 }
