@@ -1,9 +1,9 @@
-// CalendarViewDataModel.swift
+// CalendarMonth.swift
 // Copyright (c) 2019 Frank Yellin.
 
 import Foundation
 
-/// Everything the CalendarView needs in order to display one secular month.
+/// Everything the MonthGridView needs in order to display one secular month.
 /// The user's preferences are captured at creation time.
 struct CalendarMonth {
     /// The secular year being displayed
@@ -18,12 +18,15 @@ struct CalendarMonth {
     /// One entry for each day of the month.
     let days: [CalendarDay]
 
-    init(year: Int, month: Int) {
-        let calendar = Preferences.secularCalendar
+    init(
+        year: Int, month: Int,
+        calendar: SecularCalendar = Preferences.secularCalendar,
+        options: HolidayOptions = Preferences.holidayOptions
+    ) {
         self.year = year
         self.month = month
         self.calendar = calendar
-        self.options = Preferences.holidayOptions
+        self.options = options
 
         let firstDay = calendar.absoluteDay(of: SecularDate(year: year, month: month, day: 1))
         let length = calendar.lengthOfMonth(month, ofYear: year)
