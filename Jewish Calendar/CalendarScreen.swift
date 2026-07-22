@@ -10,12 +10,12 @@ struct CalendarScreen: View {
     @Environment(CalendarViewModel.self) private var model
 
     // Watching the preferences here refreshes the calendar the moment they are
-    // changed in the Settings window.  The keys and defaults match Preferences.
-    @AppStorage("julian") private var useJulian = false
-    @AppStorage("israel") private var inIsrael = false
-    @AppStorage("parsha") private var showParsha = true
-    @AppStorage("omer") private var showOmer = true
-    @AppStorage("chol") private var showCholHamoed = true
+    // changed in the Settings window.  The defaults match Preferences.
+    @AppStorage(Preferences.Key.useJulian) private var useJulian = false
+    @AppStorage(Preferences.Key.inIsrael) private var inIsrael = false
+    @AppStorage(Preferences.Key.showParsha) private var showParsha = true
+    @AppStorage(Preferences.Key.showOmer) private var showOmer = true
+    @AppStorage(Preferences.Key.showCholHamoed) private var showCholHamoed = true
 
     #if os(iOS)
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -117,6 +117,12 @@ struct CalendarScreen: View {
             }
         }
         .padding()
+        .task {
+            // Keep the today highlight correct across midnight.
+            for await _ in NotificationCenter.default.notifications(named: .NSCalendarDayChanged) {
+                model.refreshToday()
+            }
+        }
         #if os(macOS)
             .frame(minWidth: 560, minHeight: 480)
         #endif
@@ -146,9 +152,9 @@ struct CalendarScreen: View {
                 inIsrael: inIsrael, showParsha: showParsha,
                 showOmer: showOmer, showCholHamoed: showCholHamoed))
         if isCompact {
-            CompactMonthView(month: displayedMonth, fontSize: model.fontSize)
+            CompactMonthView(month: displayedMonth, today: model.today, fontSize: model.fontSize)
         } else {
-            MonthGridView(month: displayedMonth, fontSize: model.fontSize)
+            MonthGridView(month: displayedMonth, today: model.today, fontSize: model.fontSize)
         }
     }
 }

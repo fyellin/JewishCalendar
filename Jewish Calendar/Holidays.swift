@@ -4,7 +4,7 @@
 import Foundation
 
 /// The user's choices about which optional items to show on the calendar.
-struct HolidayOptions: Sendable {
+struct HolidayOptions {
     var inIsrael = false
     var showParsha = true
     var showOmer = true
@@ -260,9 +260,7 @@ extension CalendarDay {
         }
 
         if options.showOmer, let dayOfOmer = dayOfOmer(month: month, day: day), dayOfOmer != 33 {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .ordinal
-            holidays.append(formatter.string(from: NSNumber(value: dayOfOmer))! + " day Omer")
+            holidays.append(Self.ordinalFormatter.string(from: NSNumber(value: dayOfOmer))! + " day Omer")
         }
 
         if isShabbat, options.showParsha,
@@ -274,6 +272,14 @@ extension CalendarDay {
 
         return holidays
     }
+
+    /// Formats the days of the Omer as ordinals.  Shared because creating a
+    /// NumberFormatter is too expensive to repeat for every day cell.
+    private static let ordinalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        return formatter
+    }()
 
     /// The day of the Omer count (1...49), if this day is part of it.
     private func dayOfOmer(month: HebrewMonth, day: Int) -> Int? {

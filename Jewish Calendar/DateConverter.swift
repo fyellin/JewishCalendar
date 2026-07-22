@@ -5,7 +5,7 @@ import Foundation
 
 /// A day of the week.  The raw value is chosen so that a day's weekday is its
 /// absolute day number mod 7.
-enum Weekday: Int, CaseIterable, Sendable {
+enum Weekday: Int {
     case sunday = 0, monday, tuesday, wednesday, thursday, friday, saturday
 
     /// The weekday of the given day count, handling negative values correctly.
@@ -26,7 +26,7 @@ enum Weekday: Int, CaseIterable, Sendable {
 /// Gregorian calendar.  This is the "absolute date" of Reingold and Dershowitz's
 /// "Calendrical Calculations", and is the common currency through which the
 /// secular and Hebrew calendars are converted to each other.
-struct AbsoluteDay: Hashable, Comparable, Strideable, Sendable {
+struct AbsoluteDay: Strideable {
     let dayNumber: Int
 
     init(_ dayNumber: Int) {
@@ -35,6 +35,11 @@ struct AbsoluteDay: Hashable, Comparable, Strideable, Sendable {
 
     var weekday: Weekday {
         Weekday(dayNumber: dayNumber)
+    }
+
+    /// The current day.
+    static func today() -> AbsoluteDay {
+        SecularCalendar.gregorian.absoluteDay(of: SecularCalendar.gregorian.today())
     }
 
     static func < (lhs: AbsoluteDay, rhs: AbsoluteDay) -> Bool {
@@ -64,7 +69,7 @@ struct AbsoluteDay: Hashable, Comparable, Strideable, Sendable {
 
 /// A date in one of the secular calendars.  Months are numbered 1 (January)
 /// through 12 (December).
-struct SecularDate: Hashable, Sendable {
+struct SecularDate: Equatable {
     var year: Int
     var month: Int
     var day: Int
@@ -72,7 +77,7 @@ struct SecularDate: Hashable, Sendable {
 
 /// The two secular calendars.  They differ only in their leap year rule, and
 /// hence in how far they have drifted apart over the centuries.
-enum SecularCalendar: CaseIterable, Sendable {
+enum SecularCalendar: CaseIterable {
     case gregorian
     case julian
 
@@ -143,7 +148,7 @@ enum SecularCalendar: CaseIterable, Sendable {
 /// A month of the Hebrew year.  The raw values follow the traditional numbering,
 /// in which Nisan is month 1 even though the year number changes in Tishrei.
 /// In a non-leap year there is a single month of Adar, represented here as `adarI`.
-enum HebrewMonth: Int, CaseIterable, Sendable {
+enum HebrewMonth: Int {
     case nisan = 1, iyar, sivan, tammuz, av, elul
     case tishrei, cheshvan, kislev, tevet, shevat
     case adarI, adarII
@@ -178,7 +183,7 @@ enum HebrewMonth: Int, CaseIterable, Sendable {
 }
 
 /// A date in the Hebrew calendar.
-struct HebrewDate: Hashable, Sendable {
+struct HebrewDate {
     var year: Int
     var month: HebrewMonth
     var day: Int
@@ -187,7 +192,7 @@ struct HebrewDate: Hashable, Sendable {
 /// A single Hebrew year.  Its first day and its length together determine the
 /// length of every month, so this type is the context needed to interpret any
 /// date within the year.
-struct HebrewYear: Hashable, Sendable {
+struct HebrewYear: Equatable {
     let year: Int
 
     /// The day of Rosh Hashanah, 1 Tishrei.
@@ -310,7 +315,7 @@ struct HebrewYear: Hashable, Sendable {
 }
 
 /// A single day, seen simultaneously through the secular and Hebrew calendars.
-struct CalendarDay: Sendable {
+struct CalendarDay {
     let absoluteDay: AbsoluteDay
     let secularCalendar: SecularCalendar
     let secularDate: SecularDate

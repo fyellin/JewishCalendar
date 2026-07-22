@@ -3,31 +3,27 @@
 
 import Foundation
 
-/// The user's preferences, backed by UserDefaults.
+/// The user's preferences, backed by UserDefaults.  The views write them
+/// through @AppStorage, so everything here is read-only.
 enum Preferences {
     static var useJulian: Bool {
-        get { defaults.bool(forKey: Key.useJulian) }
-        set { defaults.set(newValue, forKey: Key.useJulian) }
+        defaults.bool(forKey: Key.useJulian)
     }
 
     static var inIsrael: Bool {
-        get { defaults.bool(forKey: Key.inIsrael) }
-        set { defaults.set(newValue, forKey: Key.inIsrael) }
+        defaults.bool(forKey: Key.inIsrael)
     }
 
     static var showParsha: Bool {
-        get { defaults.bool(forKey: Key.showParsha) }
-        set { defaults.set(newValue, forKey: Key.showParsha) }
+        defaults.bool(forKey: Key.showParsha)
     }
 
     static var showOmer: Bool {
-        get { defaults.bool(forKey: Key.showOmer) }
-        set { defaults.set(newValue, forKey: Key.showOmer) }
+        defaults.bool(forKey: Key.showOmer)
     }
 
     static var showCholHamoed: Bool {
-        get { defaults.bool(forKey: Key.showCholHamoed) }
-        set { defaults.set(newValue, forKey: Key.showCholHamoed) }
+        defaults.bool(forKey: Key.showCholHamoed)
     }
 
     /// The secular calendar the user has selected.
@@ -42,7 +38,8 @@ enum Preferences {
             showOmer: showOmer, showCholHamoed: showCholHamoed)
     }
 
-    private enum Key {
+    /// The UserDefaults keys, shared with the views' @AppStorage properties.
+    enum Key {
         static let useJulian = "julian"
         static let inIsrael = "israel"
         static let showParsha = "parsha"

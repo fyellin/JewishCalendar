@@ -38,9 +38,13 @@ struct CalendarMonth {
         day.holidays(options)
     }
 
-    /// Today's date, in the calendar being displayed.
-    var today: SecularDate {
-        calendar.today()
+    /// The days of the month, padded with empty cells to fill a 6-by-7 grid
+    /// aligned on weekdays.
+    var paddedCells: [CalendarDay?] {
+        var cells = Array(repeating: CalendarDay?.none, count: days[0].weekday.rawValue)
+        cells += days.map(Optional.init)
+        cells += Array(repeating: nil, count: 42 - cells.count)
+        return cells
     }
 
     /// The range of Hebrew dates covered by this secular month, such as

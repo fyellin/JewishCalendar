@@ -6,11 +6,11 @@ import SwiftUI
 /// The Settings (Preferences) window.  Values are stored in UserDefaults under
 /// the same keys the app has always used, so existing preferences carry over.
 struct SettingsView: View {
-    @AppStorage("israel") private var inIsrael = false
-    @AppStorage("julian") private var useJulian = false
-    @AppStorage("parsha") private var showParsha = true
-    @AppStorage("omer") private var showOmer = true
-    @AppStorage("chol") private var showCholHamoed = true
+    @AppStorage(Preferences.Key.inIsrael) private var inIsrael = false
+    @AppStorage(Preferences.Key.useJulian) private var useJulian = false
+    @AppStorage(Preferences.Key.showParsha) private var showParsha = true
+    @AppStorage(Preferences.Key.showOmer) private var showOmer = true
+    @AppStorage(Preferences.Key.showCholHamoed) private var showCholHamoed = true
 
     /// Once the user has read the Julian warning and clicked OK, never show it
     /// again.  (Cancelling leaves it armed for the next attempt.)

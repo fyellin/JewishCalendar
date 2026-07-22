@@ -7,13 +7,13 @@ import SwiftUI
 /// and six rows of day cells.
 struct MonthGridView: View {
     let month: CalendarMonth
+    let today: AbsoluteDay
     let fontSize: Double
 
     private static let weekdayNames = DateFormatter().shortWeekdaySymbols!
 
     var body: some View {
-        let cells = self.cells
-        let today = month.today
+        let cells = month.paddedCells
         VStack(spacing: 6) {
             Text(month.hebrewDateRange)
                 .font(.system(size: fontSize * 1.4, weight: .bold))
@@ -34,7 +34,7 @@ struct MonthGridView: View {
                             DayCellView(
                                 day: day,
                                 holidays: day.map { month.holidays(on: $0) } ?? [],
-                                isToday: day?.secularDate == today,
+                                isToday: day?.absoluteDay == today,
                                 fontSize: fontSize)
                         }
                     }
@@ -42,16 +42,6 @@ struct MonthGridView: View {
             }
         }
     }
-
-    /// The days of the month, padded with empty cells to fill a 6-by-7 grid
-    /// aligned on weekdays.
-    private var cells: [CalendarDay?] {
-        var cells = Array(repeating: CalendarDay?.none, count: month.days[0].weekday.rawValue)
-        cells += month.days.map(Optional.init)
-        cells += Array(repeating: nil, count: 42 - cells.count)
-        return cells
-    }
-
 }
 
 /// A single day of the calendar: the secular day number, the Hebrew date, and
@@ -95,6 +85,6 @@ struct DayCellView: View {
 }
 
 #Preview {
-    MonthGridView(month: CalendarMonth(year: 2027, month: 1), fontSize: 13)
+    MonthGridView(month: CalendarMonth(year: 2027, month: 1), today: .today(), fontSize: 13)
         .padding()
 }

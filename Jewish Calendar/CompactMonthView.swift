@@ -8,6 +8,7 @@ import SwiftUI
 /// a card underneath giving full details for the selected day.
 struct CompactMonthView: View {
     let month: CalendarMonth
+    let today: AbsoluteDay
     let fontSize: Double
 
     @State private var selectedDate: SecularDate?
@@ -39,8 +40,7 @@ struct CompactMonthView: View {
     }
 
     private var grid: some View {
-        let cells = self.cells
-        let today = month.today
+        let cells = month.paddedCells
         return VStack(spacing: 4) {
             ForEach(0..<6) { row in
                 HStack(spacing: 4) {
@@ -49,7 +49,7 @@ struct CompactMonthView: View {
                         CompactDayCell(
                             day: day,
                             hasHolidays: day.map { !month.holidays(on: $0).isEmpty } ?? false,
-                            isToday: day?.secularDate == today,
+                            isToday: day?.absoluteDay == today,
                             isSelected: day?.secularDate == selectedDay.secularDate,
                             fontSize: fontSize)
                             .onTapGesture {
@@ -66,19 +66,9 @@ struct CompactMonthView: View {
     /// The day whose details are shown: the tapped day if it is in this month,
     /// otherwise today, otherwise the first of the month.
     private var selectedDay: CalendarDay {
-        let today = month.today
-        return month.days.first { $0.secularDate == selectedDate }
-            ?? month.days.first { $0.secularDate == today }
+        month.days.first { $0.secularDate == selectedDate }
+            ?? month.days.first { $0.absoluteDay == today }
             ?? month.days[0]
-    }
-
-    /// The days of the month, padded with empty cells to fill a 6-by-7 grid
-    /// aligned on weekdays.
-    private var cells: [CalendarDay?] {
-        var cells = Array(repeating: CalendarDay?.none, count: month.days[0].weekday.rawValue)
-        cells += month.days.map(Optional.init)
-        cells += Array(repeating: nil, count: 42 - cells.count)
-        return cells
     }
 }
 
@@ -160,7 +150,7 @@ private struct DayDetailCard: View {
 }
 
 #Preview {
-    CompactMonthView(month: CalendarMonth(year: 2026, month: 7), fontSize: 13)
+    CompactMonthView(month: CalendarMonth(year: 2026, month: 7), today: .today(), fontSize: 13)
         .padding()
         .frame(width: 375, height: 700)
 }

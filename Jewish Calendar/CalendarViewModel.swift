@@ -22,6 +22,9 @@ final class CalendarViewModel {
     /// The month being displayed, 1 (January) through 12 (December).
     var month: Int
 
+    /// The current day, refreshed when the system clock crosses midnight.
+    private(set) var today: AbsoluteDay
+
     /// The base size of the calendar text; everything else scales from it.
     var fontSize: Double {
         didSet {
@@ -38,16 +41,24 @@ final class CalendarViewModel {
     #endif
 
     init() {
-        let today = Preferences.secularCalendar.today()
-        year = today.year
-        month = today.month
+        let today = AbsoluteDay.today()
+        self.today = today
+        let todayDate = Preferences.secularCalendar.date(of: today)
+        year = todayDate.year
+        month = todayDate.month
         let storedSize = UserDefaults.standard.double(forKey: "fontSize")
         fontSize = storedSize == 0 ? Self.defaultFontSize : storedSize
     }
 
+    /// Re-reads the clock; called when the system day changes.
+    func refreshToday() {
+        today = AbsoluteDay.today()
+    }
+
     func goToToday() {
-        let today = Preferences.secularCalendar.today()
-        (year, month) = (today.year, today.month)
+        refreshToday()
+        let todayDate = Preferences.secularCalendar.date(of: today)
+        (year, month) = (todayDate.year, todayDate.month)
     }
 
     /// Moves the display forward or backward, staying within the supported years.
@@ -64,7 +75,7 @@ final class CalendarViewModel {
     var canShowLaterYear: Bool { year < Self.yearRange.upperBound }
 
     func adjustFontSize(by delta: Double) {
-        fontSize = max(5, fontSize + delta)
+        fontSize = min(max(5, fontSize + delta), 40)
     }
 }
 
@@ -135,6 +146,7 @@ struct CalendarCommands: Commands {
         private func printCalendar() {
             let grid = MonthGridView(
                 month: CalendarMonth(year: model.year, month: model.month),
+                today: model.today,
                 fontSize: model.fontSize)
             let page = grid
                 .padding()
