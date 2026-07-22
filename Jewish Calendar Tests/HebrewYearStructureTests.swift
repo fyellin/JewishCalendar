@@ -27,7 +27,7 @@ struct HebrewYearStructureTests {
             let yomKippur = (hebrewYear.firstDay + 9).weekday
             #expect(yomKippur != .friday && yomKippur != .sunday, "Year \(year)")
 
-            // Hoshanah Rabah (21 Tishrei) never falls on Shabbat.
+            // Hoshana Rabbah (21 Tishrei) never falls on Shabbat.
             #expect((hebrewYear.firstDay + 20).weekday != .saturday, "Year \(year)")
 
             // The first day of Pesach (15 Nisan) never falls on Monday,

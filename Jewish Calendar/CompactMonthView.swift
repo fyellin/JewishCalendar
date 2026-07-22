@@ -130,23 +130,23 @@ private struct DayDetailCard: View {
         // Interpolating numbers directly into Text would add locale grouping
         // separators ("5,786"), so build plain strings first.
         let secularLine = "\(Self.weekdayNames[day.weekday.rawValue]), " +
-            "\(Self.monthNames[day.secularDate.month - 1]) \(day.secularDate.day)"
+            "\(Self.monthNames[day.secularDate.month - 1]) \(day.secularDate.day)" +
+            ", \(day.secularDate.year)"
         let hebrewLine = "\(day.hebrewDate.day) \(day.hebrewMonthName) \(day.hebrewDate.year)"
         VStack(alignment: .leading, spacing: 5) {
             Text(secularLine)
                 .font(.system(size: fontSize * 1.1, weight: .bold))
             Text(hebrewLine)
                 .font(.system(size: fontSize, weight: .semibold))
-                .foregroundStyle(.secondary)
             if holidays.isEmpty {
                 Text("No holidays")
                     .font(.system(size: fontSize))
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.secondary)
             } else {
                 ForEach(holidays, id: \.self) { holiday in
                     // The detail card has plenty of room, so always spell
-                    // out "Shabbat" in full.
-                    Text(holiday.expandingShabbat)
+                    // out abbreviated names in full.
+                    Text(holiday.expandingAbbreviations)
                         .font(.system(size: fontSize))
                 }
             }

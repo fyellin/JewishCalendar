@@ -14,7 +14,7 @@ struct HebrewDateRangeTests {
     @Test
     func monthWithinASingleHebrewMonth() {
         // February 2025 fell entirely within Shevat 5785.
-        #expect(month(2025, 2).hebrewDateRange == "3 — 30 Shvat 5785")
+        #expect(month(2025, 2).hebrewDateRange == "3 — 30 Shevat 5785")
         // February 2033 falls entirely within Adar I of leap year 5793.
         #expect(month(2033, 2).hebrewDateRange == "2 — 29 Adar I 5793")
     }
@@ -22,9 +22,9 @@ struct HebrewDateRangeTests {
     @Test
     func monthSpanningTwoHebrewMonths() {
         // July 2026 runs from Tammuz into Av (the example in the doc comment).
-        #expect(month(2026, 7).hebrewDateRange == "16 Tamuz — 17 Ab 5786")
+        #expect(month(2026, 7).hebrewDateRange == "16 Tammuz — 17 Av 5786")
         // February 2026 runs from Shevat into Adar.
-        #expect(month(2026, 2).hebrewDateRange == "14 Shvat — 11 Adar 5786")
+        #expect(month(2026, 2).hebrewDateRange == "14 Shevat — 11 Adar 5786")
     }
 
     @Test

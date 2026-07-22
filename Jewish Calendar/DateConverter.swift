@@ -157,21 +157,20 @@ enum HebrewMonth: Int, CaseIterable, Sendable {
                   .nisan, .iyar, .sivan, .tammuz, .av, .elul]
     }
 
-    /// The name shown to the user.  (Spellings are unchanged from earlier versions
-    /// of this program.)
+    /// The name shown to the user.
     func name(inLeapYear leapYear: Bool) -> String {
         switch self {
-            case .nisan: return "Nissan"
+            case .nisan: return "Nisan"
             case .iyar: return "Iyar"
             case .sivan: return "Sivan"
-            case .tammuz: return "Tamuz"
-            case .av: return "Ab"
+            case .tammuz: return "Tammuz"
+            case .av: return "Av"
             case .elul: return "Elul"
             case .tishrei: return "Tishrei"
             case .cheshvan: return "Cheshvan"
             case .kislev: return "Kislev"
             case .tevet: return "Tevet"
-            case .shevat: return "Shvat"
+            case .shevat: return "Shevat"
             case .adarI: return leapYear ? "Adar I" : "Adar"
             case .adarII: return leapYear ? "Adar II" : "Adar"
         }

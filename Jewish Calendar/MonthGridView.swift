@@ -73,7 +73,7 @@ struct DayCellView: View {
                     // Prefer "Shabbat Shirah" when the cell is wide enough,
                     // fall back to "Sh. Shirah", and shrink as a last resort.
                     ViewThatFits(in: .horizontal) {
-                        holidayText(holiday.expandingShabbat)
+                        holidayText(holiday.expandingAbbreviations)
                         holidayText(holiday)
                         holidayText(holiday)
                             .minimumScaleFactor(0.5)

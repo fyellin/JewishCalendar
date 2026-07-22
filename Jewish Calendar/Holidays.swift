@@ -12,10 +12,14 @@ struct HolidayOptions: Sendable {
 }
 
 extension String {
-    /// Holiday names abbreviate "Shabbat" as "Sh." so that they fit in a narrow
-    /// day cell.  Views with more room use this to show the full name.
-    var expandingShabbat: String {
-        hasPrefix("Sh. ") ? "Shabbat " + dropFirst(4) : self
+    /// Some holiday names are abbreviated so that they fit in a narrow day
+    /// cell.  Views with more room use this to show the full name.
+    var expandingAbbreviations: String {
+        switch self {
+            case "Erev R.H.": return "Erev Rosh Hashanah"
+            case "Erev Y.K.": return "Erev Yom Kippur"
+            default: return hasPrefix("Sh. ") ? "Shabbat " + dropFirst(4) : self
+        }
     }
 }
 
@@ -24,8 +28,8 @@ extension CalendarDay {
     /// whether we are in Israel, and on whether the user wants to see the parsha
     /// of the week, the Omer count, and Chol Hamoed.
     ///
-    /// Note: a few spellings below ("Rosh Hashonah", "Tzom Gedliah") are preserved
-    /// exactly as they have always appeared, since the golden test file locks them in.
+    /// Note: the golden test file locks in these spellings; when changing one,
+    /// update golden31.txt to match.  (Spellings were modernized in version 4.0.)
     func holidays(_ options: HolidayOptions) -> [String] {
         let isShabbat = weekday == .saturday
         let isLeapYear = hebrewYear.isLeap
@@ -92,14 +96,14 @@ extension CalendarDay {
             case (.tammuz, 17...18):
                 // 17th of Tammuz, except Shabbat pushes it to Sunday.
                 if (!isShabbat && day == 17) || (weekday == .sunday && day == 18) {
-                    holidays.append("Tzom Tamuz")
+                    holidays.append("Tzom Tammuz")
                 }
 
             /* Av */
             case (.av, 3...16):
                 if isShabbat {
                     // The Shabbat before and after Tisha B'Av are special
-                    holidays.append(day <= 9 ? "Sh. Hazon" : "Sh. Nahamu")
+                    holidays.append(day <= 9 ? "Sh. Chazon" : "Sh. Nachamu")
                 } else if day == 9 || (weekday == .sunday && day == 10) {
                     // 9th of Av, except Shabbat pushes it to Sunday.
                     holidays.append("Tisha B'Av")
@@ -108,7 +112,7 @@ extension CalendarDay {
             /* Elul */
             case (.elul, 20...26):
                 if isShabbat {
-                    holidays.append("S'lichot (evening)")
+                    holidays.append("Selichot (evening)")
                 }
 
             case (.elul, 29):
@@ -116,14 +120,14 @@ extension CalendarDay {
 
             /* Tishrei */
             case (.tishrei, 1...2):
-                holidays.append("Rosh Hashonah")
+                holidays.append("Rosh Hashanah")
 
             case (.tishrei, 3):
                 holidays.append(isShabbat ? "Sh. Shuvah" : "Tzom Gedaliah")
 
             case (.tishrei, 4):
                 if weekday == .sunday {
-                    holidays.append("Tzom Gedliah") // [sic]
+                    holidays.append("Tzom Gedaliah")
                 }
                 fallthrough
             case (.tishrei, 5...8):
@@ -152,10 +156,10 @@ extension CalendarDay {
                 }
 
             case (.tishrei, 21):
-                holidays.append("Hoshanah Rabah")
+                holidays.append("Hoshana Rabbah")
 
             case (.tishrei, 22):
-                holidays.append("Shmini Atzeret")
+                holidays.append("Shemini Atzeret")
 
             case (.tishrei, 23):
                 if !options.inIsrael {
@@ -164,19 +168,19 @@ extension CalendarDay {
 
             /* Kislev */
             case (.kislev, 24):
-                holidays.append("Erev Hanukah")
+                holidays.append("Erev Hanukkah")
 
             case (.kislev, 25...30):
-                holidays.append("Hanukah")
+                holidays.append("Hanukkah")
 
             /* Tevet */
             case (.tevet, 1...2):
-                holidays.append("Hanukah")
+                holidays.append("Hanukkah")
 
             case (.tevet, 3):
-                // Hanukah has an eighth day here only if Kislev had 29 days.
+                // Hanukkah has an eighth day here only if Kislev had 29 days.
                 if hebrewYear.isDeficient {
-                    holidays.append("Hanukah")
+                    holidays.append("Hanukkah")
                 }
 
             case (.tevet, 10...11):
@@ -191,7 +195,7 @@ extension CalendarDay {
                     holidays.append("Sh. Shirah")
                 }
                 if day == 15 {
-                    holidays.append("Tu B'Shvat")
+                    holidays.append("Tu B'Shevat")
                 }
 
             case (.shevat, 10), (.shevat, 17):
@@ -218,7 +222,7 @@ extension CalendarDay {
             /* Adar II (or Adar in a non-leap year) */
             case (.adarII, 7...13):
                 if (day == 11 && weekday == .thursday) || (day == 13 && !isShabbat) {
-                    holidays.append("Ta'anit Ester")
+                    holidays.append("Ta'anit Esther")
                 }
                 if isShabbat {
                     holidays.append("Sh. Zachor")
@@ -248,7 +252,7 @@ extension CalendarDay {
 
             case (.adarII, 24...29), (.nisan, 1):
                 if isShabbat {
-                    holidays.append("Sh. HaHodesh")
+                    holidays.append("Sh. HaChodesh")
                 }
 
             default:

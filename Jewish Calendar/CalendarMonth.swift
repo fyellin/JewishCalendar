@@ -44,7 +44,7 @@ struct CalendarMonth {
     }
 
     /// The range of Hebrew dates covered by this secular month, such as
-    /// "16 Tamuz — 17 Ab 5786".
+    /// "16 Tammuz — 17 Av 5786".
     var hebrewDateRange: String {
         let firstDay = days.first!
         let lastDay = days.last!

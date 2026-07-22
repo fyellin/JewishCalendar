@@ -41,12 +41,14 @@ struct UtilityTests {
     }
 
     @Test
-    func expandingShabbat() {
-        #expect("Sh. Hazon".expandingShabbat == "Shabbat Hazon")
-        #expect("Sh. HaGadol".expandingShabbat == "Shabbat HaGadol")
-        #expect("Rosh Hashonah".expandingShabbat == "Rosh Hashonah")
+    func expandingAbbreviations() {
+        #expect("Sh. Chazon".expandingAbbreviations == "Shabbat Chazon")
+        #expect("Sh. HaGadol".expandingAbbreviations == "Shabbat HaGadol")
+        #expect("Erev R.H.".expandingAbbreviations == "Erev Rosh Hashanah")
+        #expect("Erev Y.K.".expandingAbbreviations == "Erev Yom Kippur")
+        #expect("Rosh Hashanah".expandingAbbreviations == "Rosh Hashanah")
         // "Sh" alone, without the ". ", is not an abbreviation.
-        #expect("Shushan Purim".expandingShabbat == "Shushan Purim")
-        #expect("".expandingShabbat == "")
+        #expect("Shushan Purim".expandingAbbreviations == "Shushan Purim")
+        #expect("".expandingAbbreviations == "")
     }
 }
