@@ -144,7 +144,9 @@ private struct DayDetailCard: View {
                     .foregroundStyle(.tertiary)
             } else {
                 ForEach(holidays, id: \.self) { holiday in
-                    Text(holiday)
+                    // The detail card has plenty of room, so always spell
+                    // out "Shabbat" in full.
+                    Text(holiday.expandingShabbat)
                         .font(.system(size: fontSize))
                 }
             }

@@ -112,8 +112,9 @@ struct CalendarScreen: View {
                 #endif
             }
 
-            monthContent
-                .monthCardSwipe(model: model)
+            MonthPager(model: model) { year, month in
+                monthContent(year: year, month: month)
+            }
         }
         .padding()
         #if os(macOS)
@@ -137,21 +138,18 @@ struct CalendarScreen: View {
         #endif
     }
 
-    @ViewBuilder private var monthContent: some View {
+    @ViewBuilder private func monthContent(year: Int, month: Int) -> some View {
+        let displayedMonth = CalendarMonth(
+            year: year, month: month,
+            calendar: useJulian ? .julian : .gregorian,
+            options: HolidayOptions(
+                inIsrael: inIsrael, showParsha: showParsha,
+                showOmer: showOmer, showCholHamoed: showCholHamoed))
         if isCompact {
             CompactMonthView(month: displayedMonth, fontSize: model.fontSize)
         } else {
             MonthGridView(month: displayedMonth, fontSize: model.fontSize)
         }
-    }
-
-    private var displayedMonth: CalendarMonth {
-        CalendarMonth(
-            year: model.year, month: model.month,
-            calendar: useJulian ? .julian : .gregorian,
-            options: HolidayOptions(
-                inIsrael: inIsrael, showParsha: showParsha,
-                showOmer: showOmer, showCholHamoed: showCholHamoed))
     }
 }
 

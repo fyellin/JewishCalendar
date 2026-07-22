@@ -29,12 +29,20 @@ final class CalendarViewModel {
         }
     }
 
+    /// iOS has no menu commands to adjust the font size, and its screens have
+    /// room to spare, so it gets a larger default than the Mac.
+    #if os(iOS)
+        private static let defaultFontSize = 16.0
+    #else
+        private static let defaultFontSize = 13.0
+    #endif
+
     init() {
         let today = Preferences.secularCalendar.today()
         year = today.year
         month = today.month
         let storedSize = UserDefaults.standard.double(forKey: "fontSize")
-        fontSize = storedSize == 0 ? 13 : storedSize
+        fontSize = storedSize == 0 ? Self.defaultFontSize : storedSize
     }
 
     func goToToday() {

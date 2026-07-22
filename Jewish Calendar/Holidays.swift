@@ -11,6 +11,14 @@ struct HolidayOptions: Sendable {
     var showCholHamoed = true
 }
 
+extension String {
+    /// Holiday names abbreviate "Shabbat" as "Sh." so that they fit in a narrow
+    /// day cell.  Views with more room use this to show the full name.
+    var expandingShabbat: String {
+        hasPrefix("Sh. ") ? "Shabbat " + dropFirst(4) : self
+    }
+}
+
 extension CalendarDay {
     /// All the interesting holidays that fall on this day.  The result depends on
     /// whether we are in Israel, and on whether the user wants to see the parsha

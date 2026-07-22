@@ -70,10 +70,14 @@ struct DayCellView: View {
                 Text("\(day.hebrewDate.day) \(day.hebrewMonthName)")
                     .font(.system(size: fontSize, weight: .bold))
                 ForEach(holidays, id: \.self) { holiday in
-                    Text(holiday)
-                        .font(.system(size: fontSize))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
+                    // Prefer "Shabbat Shirah" when the cell is wide enough,
+                    // fall back to "Sh. Shirah", and shrink as a last resort.
+                    ViewThatFits(in: .horizontal) {
+                        holidayText(holiday.expandingShabbat)
+                        holidayText(holiday)
+                        holidayText(holiday)
+                            .minimumScaleFactor(0.5)
+                    }
                 }
             }
         }
@@ -81,6 +85,12 @@ struct DayCellView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(isToday ? Color.accentColor.opacity(0.25) : Color.clear)
         .border(.quaternary)
+    }
+
+    private func holidayText(_ name: String) -> some View {
+        Text(name)
+            .font(.system(size: fontSize))
+            .lineLimit(1)
     }
 }
 
