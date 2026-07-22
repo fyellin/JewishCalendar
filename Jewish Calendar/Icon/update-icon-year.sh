@@ -22,6 +22,8 @@ MASTER="$ICONSET_DIR/Icon_512x512@2x.png"    # 1024x1024
 swift fixicon.swift "$MASTER" /tmp/icon_master.png "$YEAR"
 cp /tmp/icon_master.png "$MASTER"
 cp /tmp/icon_master.png "$ICONSET_DIR/Icon_iOS_1024.png"
+# The App Store rejects iOS icons with an alpha channel (the Mac ones keep theirs).
+swift flatten_alpha.swift "$ICONSET_DIR/Icon_iOS_1024.png"
 
 # 2. Regenerate every smaller size from the master.
 sips -z 512 512 /tmp/icon_master.png --out "$ICONSET_DIR/Icon_512x512.png" > /dev/null
