@@ -26,16 +26,22 @@ struct MonthGridView: View {
                 }
             }
 
-            VStack(spacing: 0) {
-                ForEach(0..<6) { row in
-                    HStack(spacing: 0) {
-                        ForEach(0..<7) { column in
-                            let day = cells[row * 7 + column]
-                            DayCellView(
-                                day: day,
-                                holidays: day.map { month.holidays(on: $0) } ?? [],
-                                isToday: day?.absoluteDay == today,
-                                fontSize: fontSize)
+            // Every cell gets exactly a sixth of the height, so a day with many
+            // holidays can't stretch its row; its text is clipped instead.
+            GeometryReader { proxy in
+                let rowHeight = proxy.size.height / 6
+                VStack(spacing: 0) {
+                    ForEach(0..<6) { row in
+                        HStack(spacing: 0) {
+                            ForEach(0..<7) { column in
+                                let day = cells[row * 7 + column]
+                                DayCellView(
+                                    day: day,
+                                    holidays: day.map { month.holidays(on: $0) } ?? [],
+                                    isToday: day?.absoluteDay == today,
+                                    fontSize: fontSize,
+                                    height: rowHeight)
+                            }
                         }
                     }
                 }
@@ -51,6 +57,18 @@ struct DayCellView: View {
     let holidays: [String]
     let isToday: Bool
     let fontSize: Double
+    let height: Double
+
+    /// The natural height of the cell's text, measured as it is laid out.
+    /// When it exceeds the space inside the cell, the text is clipped and a
+    /// click shows the full list in a popover.
+    @State private var contentHeight = 0.0
+
+    @State private var showingDetails = false
+
+    private var overflows: Bool {
+        contentHeight > height - 4 // 4 = the cell's vertical padding
+    }
 
     var body: some View {
         VStack(spacing: 1) {
@@ -71,10 +89,41 @@ struct DayCellView: View {
                 }
             }
         }
+        .onGeometryChange(for: Double.self) { proxy in
+            proxy.size.height
+        } action: { newHeight in
+            contentHeight = newHeight
+        }
         .padding(2)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        // Pinning both height bounds keeps the cell rigid even when the text
+        // inside wants more room; the overflow is clipped away.
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .top)
+        .clipped()
+        .overlay(alignment: .bottomTrailing) {
+            if overflows {
+                Image(systemName: "ellipsis.circle.fill")
+                    .font(.system(size: fontSize * 0.9))
+                    .foregroundStyle(.secondary)
+                    .padding(1)
+            }
+        }
         .background(isToday ? Color.accentColor.opacity(0.25) : Color.clear)
-        .border(.quaternary)
+        .border(.quaternary, width: day == nil ? 0 : 1)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if overflows {
+                showingDetails = true
+            }
+        }
+        .popover(isPresented: $showingDetails) {
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(holidays, id: \.self) { holiday in
+                    Text(holiday.expandingAbbreviations)
+                        .font(.system(size: fontSize))
+                }
+            }
+            .padding()
+        }
     }
 
     private func holidayText(_ name: String) -> some View {
