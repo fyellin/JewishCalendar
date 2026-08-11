@@ -201,3 +201,10 @@ struct CalendarScreen: View {
     CalendarScreen()
         .environment(CalendarViewModel())
 }
+
+#if os(iOS)
+    #Preview("Landscape", traits: .landscapeLeft) {
+        CalendarScreen()
+            .environment(CalendarViewModel())
+    }
+#endif
