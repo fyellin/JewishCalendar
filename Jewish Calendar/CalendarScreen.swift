@@ -95,13 +95,10 @@ struct CalendarScreen: View {
                     .help("Next year (↑)")
                 }
 
-                if useJulian {
-                    badge("Julian", .orange)
-                        .help("Dates are shown in the Julian calendar (see Settings)")
-                }
-                if inIsrael {
-                    badge("Israel", .blue)
-                        .help("Holidays follow Israel observance (see Settings)")
+                // A narrow screen has no room for the badges here; they get
+                // their own row below instead.
+                if !isCompact {
+                    badges
                 }
 
                 Spacer()
@@ -111,14 +108,24 @@ struct CalendarScreen: View {
                 }
 
                 #if os(iOS)
-                    // On the Mac, Settings lives in the app menu (⌘,); iOS needs
-                    // its own way in.
                     Button {
                         showingSettings = true
                     } label: {
                         Image(systemName: "gearshape")
                     }
+                #else
+                    // Opens the same Settings window as the app menu's ⌘,.
+                    SettingsLink {
+                        Image(systemName: "gearshape")
+                    }
+                    .help("Settings (⌘,)")
                 #endif
+            }
+
+            if isCompact, useJulian || inIsrael {
+                HStack(spacing: 8) {
+                    badges
+                }
             }
 
             MonthPager(model: model) { year, month in
@@ -153,10 +160,22 @@ struct CalendarScreen: View {
         #endif
     }
 
-    /// A capsule in the control bar calling out one of the display modes.
+    /// The capsules calling out the non-default display modes.
+    @ViewBuilder private var badges: some View {
+        if useJulian {
+            badge("Julian", .orange)
+                .help("Dates are shown in the Julian calendar (see Settings)")
+        }
+        if inIsrael {
+            badge("Israel", .blue)
+                .help("Holidays follow Israel observance (see Settings)")
+        }
+    }
+
     private func badge(_ text: String, _ color: Color) -> some View {
         Text(text)
             .font(.callout.weight(.semibold))
+            .fixedSize() // never hyphenate into a squashed capsule
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
             .background(Capsule().fill(color))

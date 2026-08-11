@@ -12,10 +12,8 @@ struct SettingsView: View {
     @AppStorage(Preferences.Key.showOmer) private var showOmer = true
     @AppStorage(Preferences.Key.showCholHamoed) private var showCholHamoed = true
 
-    /// Once the user has read the Julian warning and clicked OK, never show it
-    /// again.  (Cancelling leaves it armed for the next attempt.)
-    @AppStorage("julianWarningAcknowledged") private var julianWarningAcknowledged = false
-
+    /// Switching to the Julian calendar is rare and easy to do by mistake, so
+    /// every switch asks for confirmation.
     @State private var confirmingJulian = false
 
     var body: some View {
@@ -24,7 +22,7 @@ struct SettingsView: View {
                 Text("Diaspora").tag(false)
                 Text("Israel").tag(true)
             }
-            .pickerStyle(.inline)
+            .pickerStyle(.segmented)
 
             Section("Show:") {
                 Toggle("Parsha of the week", isOn: $showParsha)
@@ -32,15 +30,20 @@ struct SettingsView: View {
                 Toggle("Chol Hamoed", isOn: $showCholHamoed)
             }
 
-            Picker("Secular calendar:", selection: $useJulian) {
-                Text("Gregorian").tag(false)
-                Text("Julian").tag(true)
-            }
-            .pickerStyle(.inline)
-            .onChange(of: useJulian) { _, newValue in
-                if newValue, !julianWarningAcknowledged {
-                    confirmingJulian = true
+            Section {
+                Picker("Secular calendar:", selection: $useJulian) {
+                    Text("Gregorian").tag(false)
+                    Text("Julian").tag(true)
                 }
+                .pickerStyle(.segmented)
+                .onChange(of: useJulian) { _, newValue in
+                    if newValue {
+                        confirmingJulian = true
+                    }
+                }
+            } footer: {
+                // Showing today's shifted date makes the 13-day gap concrete.
+                Text("Today in the Julian calendar: \(julianToday)")
             }
         }
         .formStyle(.grouped)
@@ -51,19 +54,21 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {
                 useJulian = false
             }
-            Button("OK") {
-                julianWarningAcknowledged = true
-            }
+            Button("OK") {}
         } message: {
             Text(julianWarning)
         }
     }
 
-    private var julianWarning: String {
+    /// Today's date in the Julian calendar, such as "28 July, 2026".
+    private var julianToday: String {
         let today = SecularCalendar.julian.today()
         let monthNames = DateFormatter().standaloneMonthSymbols!
-        let date = "\(today.day) \(monthNames[today.month - 1]), \(today.year)"
-        return """
+        return "\(today.day) \(monthNames[today.month - 1]), \(today.year)"
+    }
+
+    private var julianWarning: String {
+        """
         Please don't use this option unless you understand the difference between \
         the Gregorian and the Julian calendar.
 
@@ -71,7 +76,7 @@ struct SettingsView: View {
         Great Britain (including its American colonies) switched in 1752, \
         and Turkey in 1926.
 
-        Today's date in the Julian calendar is \(date).  If you are confused, please hit 'Cancel'.
+        Today's date in the Julian calendar is \(julianToday).  If you are confused, please hit 'Cancel'.
         """
     }
 }
