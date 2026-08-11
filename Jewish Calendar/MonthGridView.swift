@@ -29,7 +29,7 @@ struct MonthGridView: View {
             // Every cell gets exactly a sixth of the height, so a day with many
             // holidays can't stretch its row; its text is clipped instead.
             GeometryReader { proxy in
-                let rowHeight = proxy.size.height / 6
+                let rowHeight: CGFloat? = proxy.size.height > 0 ? proxy.size.height / 6 : nil
                 VStack(spacing: 0) {
                     ForEach(0..<6) { row in
                         HStack(spacing: 0) {
@@ -57,7 +57,9 @@ struct DayCellView: View {
     let holidays: [String]
     let isToday: Bool
     let fontSize: Double
-    let height: Double
+    let height: CGFloat?
+
+    private static let cellPadding: CGFloat = 2
 
     /// The natural height of the cell's text, measured as it is laid out.
     /// When it exceeds the space inside the cell, the text is clipped and a
@@ -67,7 +69,8 @@ struct DayCellView: View {
     @State private var showingDetails = false
 
     private var overflows: Bool {
-        contentHeight > height - 4 // 4 = the cell's vertical padding
+        guard let height else { return false }
+        return contentHeight > height - Self.cellPadding * 2
     }
 
     var body: some View {
@@ -94,7 +97,7 @@ struct DayCellView: View {
         } action: { newHeight in
             contentHeight = newHeight
         }
-        .padding(2)
+        .padding(Self.cellPadding)
         // Pinning both height bounds keeps the cell rigid even when the text
         // inside wants more room; the overflow is clipped away.
         .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .top)
@@ -115,9 +118,10 @@ struct DayCellView: View {
                 showingDetails = true
             }
         }
+        .allowsHitTesting(day != nil)
         .popover(isPresented: $showingDetails) {
             VStack(alignment: .leading, spacing: 4) {
-                ForEach(holidays, id: \.self) { holiday in
+                ForEach(Array(holidays.enumerated()), id: \.offset) { _, holiday in
                     Text(holiday.expandingAbbreviations)
                         .font(.system(size: fontSize))
                 }

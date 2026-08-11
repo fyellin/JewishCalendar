@@ -95,6 +95,15 @@ struct CalendarScreen: View {
                     .help("Next year (↑)")
                 }
 
+                if useJulian {
+                    badge("Julian", .orange)
+                        .help("Dates are shown in the Julian calendar (see Settings)")
+                }
+                if inIsrael {
+                    badge("Israel", .blue)
+                        .help("Holidays follow Israel observance (see Settings)")
+                }
+
                 Spacer()
 
                 Button("Today") {
@@ -142,6 +151,16 @@ struct CalendarScreen: View {
                 }
             }
         #endif
+    }
+
+    /// A capsule in the control bar calling out one of the display modes.
+    private func badge(_ text: String, _ color: Color) -> some View {
+        Text(text)
+            .font(.callout.weight(.semibold))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
+            .background(Capsule().fill(color))
+            .colorScheme(.dark)
     }
 
     @ViewBuilder private func monthContent(year: Int, month: Int) -> some View {
